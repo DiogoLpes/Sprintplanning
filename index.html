@@ -368,15 +368,94 @@
           <div class="subtasks mt-3 space-y-2">
             <div class="subtask-row pl-3 py-1 rounded-r">
               <div class="text-xs font-medium text-slate-300">Hero section com gradiente e 4 blocos de acesso rápido</div>
-              <div class="text-xs text-slate-500 mt-0.5">Giulio · Cards coloridos por área. Mobile-first.</div>
+              <div class="text-xs text-slate-500 mt-0.5">Giulio · Cards coloridos por área. Mobile-first. Animações suaves.</div>
             </div>
             <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Secção "Sobre o Projeto" estática</div>
+              <div class="text-xs font-medium text-slate-300">Secção "Sobre o Projeto" estática com missão e impacto</div>
               <div class="text-xs text-slate-500 mt-0.5">Giulio · Missão, objetivos, público-alvo. Texto acessível (baixa literacia).</div>
             </div>
             <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Hook useDisciplines() a consumir a API</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · React Query / SWR. Loading + error states tratados.</div>
+              <div class="text-xs font-medium text-slate-300">Integração com API: Hook useDisciplines()</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · React Query / SWR. Loading + error states. Revalidation automática.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Secção de estatísticas (número de recursos, disciplinas, etc)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · Cards com números. Vêm da API. Animação ao carregar.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BE-06 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">BE-06</span>
+                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
+                <span class="tag-be chip text-xs rounded">BE</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Feature EDIT: Endpoints para editar conteúdo (protegido)</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Criar endpoints PUT/PATCH e DELETE para editar/apagar recursos da API. Apenas admins e editors conseguem. Ex: PUT /api/v1/resources/123/ com novos dados. Integrado no Django Admin. Permitir que a equipa da Fundação atualize conteúdos sem contactar programadores.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-cristian">Cristian</span>
+            <span class="chip chip-adrien">Adrien</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Implementar ViewSets com update/partial_update/destroy</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · DisciplineViewSet, TopicViewSet, ResourceViewSet, GameViewSet, BookViewSet.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Validação de permissões: IsAdminUser ou IsEditor</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · GET público. POST/PUT/PATCH/DELETE protegidos. Custom permission class.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Testes para PUT/PATCH/DELETE (com autenticação)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian + Adrien · Testar sucesso (200) e rejeição sem permissão (401/403).</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Integração no Django Admin (update_fields customizado)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Adrien · Admin consegue salvar mudanças direto. Validações ativas.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BE-07 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">BE-07</span>
+                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
+                <span class="tag-be chip text-xs rounded">BE</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Upload de ficheiros (imagens, vídeos, PDFs)</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Permitir upload de media files (imagens de recursos, capas de livros, thumbnails de jogos, PDFs). Usar Django Storage (local ou S3) + scanning de segurança (virus check). Limpar uploads inválidos automaticamente. Integrado com Django Admin CMS.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-cristian">Cristian</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Configurar FileField + ImageField nos modelos</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · Resource.file, Book.cover, Game.thumbnail. Validação de tipos.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Endpoint POST /api/v1/upload/ com multipart form</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · Retorna URL do arquivo. Validação de tamanho + tipo MIME.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Integração no Django Admin (file picker widgets)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · Drag-and-drop de ficheiros no admin. Preview imagens.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Testes de upload com ficheiros válidos e inválidos</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · Testar size limit, tipo MIME inválido, segurança.</div>
             </div>
           </div>
         </div>
@@ -388,32 +467,33 @@
               <div class="flex items-center gap-2 mb-2">
                 <span class="mono text-xs text-slate-500">CRS-01</span>
                 <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
-                <span class="tag-fe chip text-xs rounded">FE</span>
+                <span class="tag-full chip text-xs rounded">FULL</span>
               </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Página "Sobre" + Página "Contactos"</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">2 páginas importantes: /sobre tem info sobre o projeto, equipa, impacto (conteúdo editável). /contactos tem um formulário onde pais/educadores enviam mensagens. Precisa de validação no frontend + endpoint simples no backend que guarda em base de dados.</p>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Página "Sobre" + Página "Contactos" (Frontend + Backend)</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">2 páginas importantes: /sobre tem info sobre o projeto, equipa, impacto (conteúdo editável no admin). /contactos tem um formulário onde pais/educadores enviam mensagens. Frontend com validação + Backend com endpoint que guarda em DB.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
           <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-cristian">Cristian</span>
+            <span class="chip chip-giulio">Giulio</span>
+            <span class="chip chip-adrien">Adrien</span>
           </div>
           <div class="subtasks mt-3 space-y-2">
             <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Criar página /sobre (conteúdo estático)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Usar SectionTitle e Card do FE-02. História, equipa, missão, impacto.</div>
+              <div class="text-xs font-medium text-slate-300">Frontend: Criar página /sobre (conteúdo estático/dinâmico)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Giulio · Usar SectionTitle e Card do FE-02. História, equipa, missão, impacto. Responsivo.</div>
             </div>
             <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Criar página /contactos com formulário (nome, email, mensagem)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Validação básica no frontend. Estado de sucesso/erro visível.</div>
+              <div class="text-xs font-medium text-slate-300">Frontend: Criar página /contactos com formulário</div>
+              <div class="text-xs text-slate-500 mt-0.5">Giulio · Form com nome, email, mensagem. Validação no frontend + success/error states.</div>
             </div>
             <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Endpoint Django POST /api/v1/contact/</div>
-              <div class="text-xs text-slate-500 mt-0.5">Serializer simples + retorna 200 OK. Code review do Adrien obrigatório.</div>
+              <div class="text-xs font-medium text-slate-300">Backend: Endpoint Django POST /api/v1/contact/</div>
+              <div class="text-xs text-slate-500 mt-0.5">Adrien · Model Contact, Serializer, teste unitário de POST válido/inválido.</div>
             </div>
             <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Testes unitários para o endpoint de contacto</div>
-              <div class="text-xs text-slate-500 mt-0.5">APITestCase: POST válido e POST sem campos obrigatórios.</div>
+              <div class="text-xs font-medium text-slate-300">Backend: Model página About (title, content, team, etc.)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Adrien · Editável no admin (BE-03). GET /api/v1/about/ retorna dados.</div>
             </div>
           </div>
         </div>
@@ -425,10 +505,10 @@
               <div class="flex items-center gap-2 mb-2">
                 <span class="mono text-xs text-slate-500">CRS-02</span>
                 <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
-                <span class="tag-be chip text-xs rounded">BE</span>
+                <span class="tag-test chip text-xs rounded">TEST</span>
               </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Testes de integração para API REST</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Escrever testes unitários em Django para garantir que todos os endpoints funcionam. Testes: GET retorna dados corretos, POST cria recursos, filtros funcionam, efeito headers de autenticação, códigos HTTP estão certos (200 OK, 401 Unauthorised, 404 Not Found, etc). Isto garante que o backend nunca rebenta sem avisar.</p>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Testes de integração para API REST (GET, POST, autenticação)</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Escrever testes unitários em Django para garantir que todos os endpoints funcionam. Testes: GET retorna dados corretos, POST cria recursos, filtros funcionam, headers de autenticação rejeitam sem token, códigos HTTP corretos (200 OK, 401, 403, 404). Isto desbloqueia BE-06 (edit endpoints) e garante qualidade.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
@@ -438,16 +518,20 @@
           </div>
           <div class="subtasks mt-3 space-y-2">
             <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">APITestCase para GET /api/v1/disciplines/</div>
-              <div class="text-xs text-slate-500 mt-0.5">Verificar estrutura de resposta e paginação.</div>
+              <div class="text-xs font-medium text-slate-300">APITestCase para GET /api/v1/disciplines/ e /topics/ com paginação</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · Verificar estrutura de resposta, status code, limite de items por página.</div>
             </div>
             <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Testes de autênticação e permissões</div>
-              <div class="text-xs text-slate-500 mt-0.5">Verificar que endpoints públicos retornam 200 e privados retornam 401.</div>
+              <div class="text-xs font-medium text-slate-300">Testes de autenticação (token válido vs. sem token vs. token inválido)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Adrien · Endpoints públicos retornam 200. Endpoints protegidos retornam 401/403.</div>
             </div>
             <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Testes de filtros e search</div>
-              <div class="text-xs text-slate-500 mt-0.5">?search=, ?discipline=, ?year= devem retornar os resultados esperados.</div>
+              <div class="text-xs font-medium text-slate-300">Testes de filtros: ?search=, ?discipline=, ?year= e ordenação</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · Verificar que resultados são filtrados corretamente. Testar sort.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Testes para 404 (recurso não existe) e 400 (query inválida)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Adrien · Mensagens de erro claras. Código HTTP correto.</div>
             </div>
           </div>
         </div>
@@ -458,30 +542,33 @@
             <div class="flex-1">
               <div class="flex items-center gap-2 mb-2">
                 <span class="mono text-xs text-slate-500">CRS-03</span>
-                <span class="w-2 h-2 rounded-full prio-low flex-shrink-0"></span>
-                <span class="tag-doc chip text-xs rounded">DOC</span>
+                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
+                <span class="tag-fe chip text-xs rounded">FE</span>
               </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Frontend: Página de Recursos "Aprender"</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">A página principal do app. Mostra: 1) Grid com todas as disciplinas (Português, Matemática...). 2) Quando clicas numa, vê tópicos desse ano. 3) Quando clicas num tópico, vê os recursos (vídeos, PDFs, exercícios). Tudo vem da API e tem filtros para ano escolar.</p>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Página de Recursos "Aprender" (Frontend)</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">A página principal do app de aprendizagem. Mostra: 1) Grid com todas as disciplinas (Português, Matemática...). 2) Quando clicas numa, vê tópicos desse ano escolar. 3) Quando clicas num tópico, vê todos os recursos (vídeos, PDFs, exercícios). Tudo vem da API com filtros por disciplina e ano.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
           <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-cristian">Cristian</span>
             <span class="chip chip-giulio">Giulio</span>
           </div>
           <div class="subtasks mt-3 space-y-2">
             <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Componente DisciplineList com cards clicáveis</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · Listar todas as disciplinas com ícone e cor.</div>
+              <div class="text-xs font-medium text-slate-300">Componente DisciplineList com grid de cards clicáveis</div>
+              <div class="text-xs text-slate-500 mt-0.5">Giulio · Listar todas as disciplinas com ícone, cor e nome. Layout responsivo grid.</div>
             </div>
             <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Componente TopicList com filtro por disciplina e ano</div>
-              <div class="text-xs text-slate-500 mt-0.5">Giulio · Dropdown de seleção. Dados do hook useTopics().</div>
+              <div class="text-xs font-medium text-slate-300">Componente TopicList com filtro por disciplina e ano escolar</div>
+              <div class="text-xs text-slate-500 mt-0.5">Giulio · Dropdown de seleção de ano (1-6). Dados de hook useTopics(). Breadcrumb navigation.</div>
             </div>
             <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Componente ResourceCard com preview inline</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · Card clicável para abrir o recurso (video, PDF, texto).</div>
+              <div class="text-xs font-medium text-slate-300">Componente ResourceCard com preview e tipo de recurso</div>
+              <div class="text-xs text-slate-500 mt-0.5">Giulio · Card clicável com ícone de tipo (video, pdf, text, exercise). Hover action.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Modal ResourceDetail para abrir recurso (player, PDF viewer, etc)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Giulio · Mostrar conteúdo inline (video player, PDF embed, texto formatado).</div>
             </div>
           </div>
         </div>
@@ -502,7 +589,6 @@
           </div>
           <div class="flex flex-wrap gap-1 mt-2">
             <span class="chip chip-giulio">Giulio</span>
-            <span class="chip chip-cristian">Cristian</span>
           </div>
           <div class="subtasks mt-3 space-y-2">
             <div class="subtask-row pl-3 py-1 rounded-r">
@@ -583,6 +669,81 @@
             <div class="subtask-row pl-3 py-1 rounded-r">
               <div class="text-xs font-medium text-slate-300">Relatório de cobertura com coverage.py</div>
               <div class="text-xs text-slate-500 mt-0.5">Adrien · Target: 80% min. CI valida coverage em cada PR.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BE-06 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">BE-06</span>
+                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
+                <span class="tag-be chip text-xs rounded">BE</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Feature EDIT: Endpoints para editar conteúdo (protegido)</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Criar endpoints PUT/PATCH e DELETE para editar/apagar recursos da API. Apenas admins e editors conseguem. Ex: PUT /api/v1/resources/123/ com novos dados. Integrado no Django Admin. Permitir que a equipa da Fundação atualize conteúdos sem contactar programadores.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-cristian">Cristian</span>
+            <span class="chip chip-adrien">Adrien</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Implementar ViewSets com update/partial_update/destroy</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · DisciplineViewSet, TopicViewSet, ResourceViewSet, GameViewSet, BookViewSet.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Validação de permissões: IsAdminUser ou IsEditor</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · GET público. POST/PUT/PATCH/DELETE protegidos. Custom permission class.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Testes para PUT/PATCH/DELETE (com autenticação)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian + Adrien · Testar sucesso (200) e rejeição sem permissão (401/403).</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Integração no Django Admin (update_fields customizado)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Adrien · Admin consegue salvar mudanças direto. Validações ativas.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BE-07 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">BE-07</span>
+                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
+                <span class="tag-be chip text-xs rounded">BE</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Upload de ficheiros (imagens, vídeos, PDFs)</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Permitir upload de media files (imagens de recursos, capas de livros, thumbnails de jogos, PDFs). Usar Django Storage (local ou S3) + scanning de segurança. Limpar uploads inválidos automaticamente. Integrado com Django Admin CMS para que o cliente upload conteúdo facilmente.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-cristian">Cristian</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Configurar FileField + ImageField nos modelos</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · Resource.file, Book.cover, Game.thumbnail. Validação de tipos MIME.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Endpoint POST /api/v1/upload/ com multipart form</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · Retorna URL do arquivo. Validação de tamanho máximo (50MB).</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Integração no Django Admin (file picker widgets)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · Drag-and-drop de ficheiros no admin. Preview de imagens.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Testes de upload com ficheiros válidos e inválidos</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · Testar size limit, tipo MIME inválido, edge cases.</div>
             </div>
           </div>
         </div>
@@ -780,6 +941,30 @@
 
 </div><!-- end board flex -->
 </div><!-- end overflow-x-auto -->
+
+<!-- MODAL PARA EDITAR CARD -->
+<div id="editCardModal" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="text-lg font-bold text-white">Editar Card</h2>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Título</label>
+        <input type="text" id="editCardTitle" class="form-input" placeholder="Título da task...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Descrição</label>
+        <textarea id="editCardDesc" class="form-textarea" placeholder="Descrição detalhada..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button onclick="closeEditCardModal()" class="btn btn-secondary">Cancelar</button>
+      <button onclick="saveEditCard()" class="btn btn-primary">Guardar</button>
+      <button onclick="deleteCard()" class="btn" style="background: #ef4444; color: white; margin-left: auto;">Eliminar</button>
+    </div>
+  </div>
+</div>
 
 <!-- MODAL PARA CRIAR NOVA TASK -->
 <div id="createCardModal" class="modal-overlay hidden">
@@ -1093,7 +1278,10 @@ function saveNewCard() {
           <div class="font-semibold text-sm text-slate-100 leading-snug">${title}</div>
           <p class="text-xs text-slate-400 mt-1 leading-relaxed">${desc}</p>
         </div>
-        <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+        <div class="flex items-center gap-1 flex-shrink-0">
+          <button onclick="openEditCardModal(event)" class="text-slate-400 hover:text-blue-400 text-xs px-2 py-1 rounded hover:bg-slate-800 transition" title="Editar card">✎</button>
+          <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+        </div>
       </div>
       <div class="flex flex-wrap gap-1 mt-2">
         ${memberChips}
@@ -1119,7 +1307,9 @@ function saveNewCard() {
   });
 
   updateStats();
+  saveBoardState();
   closeCreateCardModal();
+  addEditButtonsToAllCards();
 }
 
 // Drag & Drop functionality
@@ -1164,6 +1354,7 @@ function setupDragAndDrop() {
       if (draggedElement && draggedElement.parentElement !== column) {
         column.appendChild(draggedElement);
         updateStats();
+        saveBoardState();
       }
     });
   });
@@ -1192,13 +1383,169 @@ function updateStats() {
   });
 }
 
+// ============ EDIT CARD FUNCTIONS ============
+let editingCard = null;
+
+function addEditButtonsToAllCards() {
+  document.querySelectorAll('.card[draggable="true"]').forEach(card => {
+    // Verificar se já tem botão de edição
+    if (card.querySelector('button[onclick="openEditCardModal(event)"]')) {
+      return;
+    }
+    
+    const chevron = card.querySelector('.chevron');
+    if (chevron) {
+      const editBtn = document.createElement('button');
+      editBtn.onclick = (e) => openEditCardModal(e);
+      editBtn.className = 'text-slate-400 hover:text-blue-400 text-xs px-2 py-1 rounded hover:bg-slate-800 transition';
+      editBtn.title = 'Editar card';
+      editBtn.textContent = '✎';
+      
+      chevron.parentElement.insertBefore(editBtn, chevron);
+    }
+  });
+}
+
+function openEditCardModal(event) {
+  event.stopPropagation();
+  
+  const card = event.target.closest('.card');
+  if (!card) return;
+  
+  editingCard = card;
+  
+  const titleEl = card.querySelector('.font-semibold.text-sm');
+  const descEl = card.querySelector('.text-xs.text-slate-400.mt-1');
+  
+  document.getElementById('editCardTitle').value = titleEl?.textContent || '';
+  document.getElementById('editCardDesc').value = descEl?.textContent || '';
+  
+  document.getElementById('editCardModal').classList.remove('hidden');
+}
+
+function closeEditCardModal() {
+  document.getElementById('editCardModal').classList.add('hidden');
+  editingCard = null;
+}
+
+function saveEditCard() {
+  if (!editingCard) return;
+  
+  const newTitle = document.getElementById('editCardTitle').value.trim();
+  const newDesc = document.getElementById('editCardDesc').value.trim();
+  
+  if (!newTitle) {
+    alert('Título é obrigatório!');
+    return;
+  }
+  
+  const titleEl = editingCard.querySelector('.font-semibold.text-sm');
+  const descEl = editingCard.querySelector('.text-xs.text-slate-400.mt-1');
+  
+  if (titleEl) titleEl.textContent = newTitle;
+  if (descEl) descEl.textContent = newDesc;
+  
+  saveBoardState();
+  closeEditCardModal();
+}
+
+function deleteCard() {
+  if (!editingCard) return;
+  
+  if (confirm('Tem a certeza que quer eliminar este card?')) {
+    editingCard.remove();
+    saveBoardState();
+    closeEditCardModal();
+    updateStats();
+  }
+}
+
+// ============ LOCALSTORAGE FUNCTIONS ============
+function saveBoardState() {
+  const boardState = {};
+  
+  document.querySelectorAll('[id^="col-"]').forEach(col => {
+    const colId = col.id;
+    boardState[colId] = [];
+    
+    col.querySelectorAll('.card').forEach(card => {
+      const idEl = card.querySelector('.mono.text-xs.text-slate-500');
+      const titleEl = card.querySelector('.font-semibold.text-sm');
+      const descEl = card.querySelector('.text-xs.text-slate-400.mt-1');
+      
+      if (idEl) {
+        boardState[colId].push({
+          id: idEl.textContent,
+          title: titleEl?.textContent || '',
+          desc: descEl?.textContent || '',
+          html: card.innerHTML
+        });
+      }
+    });
+  });
+  
+  localStorage.setItem('sprintBoardState', JSON.stringify(boardState));
+  console.log('Board state saved to localStorage');
+}
+
+function restoreBoardState() {
+  const savedState = localStorage.getItem('sprintBoardState');
+  if (!savedState) return;
+  
+  try {
+    const boardState = JSON.parse(savedState);
+    
+    Object.keys(boardState).forEach(colId => {
+      const col = document.getElementById(colId);
+      if (!col) return;
+      
+      // Limpar cards existentes (excepto o card de "Done" que é só referência)
+      const existingCards = col.querySelectorAll('.card');
+      existingCards.forEach((card, idx) => {
+        // Manter o primeiro card se for o card concluído
+        if (!(colId === 'col-done' && idx === 0)) {
+          card.remove();
+        }
+      });
+      
+      // Adicionar cards restaurados
+      boardState[colId].forEach(cardData => {
+        const cardEl = document.createElement('div');
+        cardEl.innerHTML = cardData.html;
+        col.appendChild(cardEl.firstElementChild);
+      });
+    });
+    
+    setupDragAndDrop();
+    updateStats();
+    addEditButtonsToAllCards();
+    console.log('Board state restored from localStorage');
+  } catch (e) {
+    console.error('Error restoring board state:', e);
+  }
+}
+
+// ============ SYNC BETWEEN TABS ============
+window.addEventListener('storage', (e) => {
+  if (e.key === 'sprintBoardState' && e.newValue) {
+    console.log('Sincronizando com outra aba...');
+    restoreBoardState();
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   updateStats();
   setupDragAndDrop();
+  restoreBoardState();
+  addEditButtonsToAllCards();
   
-  // Close modal on overlay click
+  // Close modals on overlay click
   document.getElementById('createCardModal').addEventListener('click', (e) => {
     if (e.target.id === 'createCardModal') closeCreateCardModal();
+  });
+  
+  document.getElementById('editCardModal').addEventListener('click', (e) => {
+    if (e.target.id === 'editCardModal') closeEditCardModal();
   });
 
   // Allow Enter key to add subtask
@@ -1207,6 +1554,16 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       addSubtaskField();
     }
+  });
+  
+  // Save board state every time it changes
+  const observer = new MutationObserver(() => {
+    saveBoardState();
+  });
+  
+  observer.observe(document.querySelector('.flex[style*="min-width"]'), {
+    subtree: true,
+    childList: true
   });
 });
 </script>
