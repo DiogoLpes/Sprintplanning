@@ -984,8 +984,7 @@ let currentCardColumn = null;
 let subtasks = [];
 
 function toggleCard(event) {
-  // Prevent toggle if clicking on draggable element
-  if (event.target.closest('.card').draggable) return;
+  // Clica no card para expandir/fechar subtasks
   const card = event.currentTarget;
   card.classList.toggle('open');
 }
