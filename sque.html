@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sprint 1 — Integra-te Kanban</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --blue:#3B82F6; --yellow:#F59E0B; --salmon:#F97316;
+    --purple:#8B5CF6; --green:#10B981; --pink:#EC4899;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: 'Space Grotesk', sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #1a1d27; }
+  ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+
+  .board-col { min-width: 300px; max-width: 320px; flex-shrink: 0; }
+  .card { transition: transform .15s ease, box-shadow .15s ease; cursor: pointer; }
+  .card:hover { transform: translateY(-2px); }
+  .card.open .subtasks { display: block; }
+  .card.open .chevron { transform: rotate(180deg); }
+  .subtasks { display: none; }
+  .chevron { transition: transform .2s ease; display: inline-block; }
+
+  /* member chips */
+  .chip { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+  .chip-adrien  { background:#1e3a5f; color:#93c5fd; border:1px solid #2d5a8e; }
+  .chip-diogo   { background:#064e3b; color:#6ee7b7; border:1px solid #065f46; }
+  .chip-giulio  { background:#451a03; color:#fdba74; border:1px solid #7c2d12; }
+  .chip-cristian{ background:#3b0764; color:#d8b4fe; border:1px solid #5b21b6; }
+  .chip-all     { background:#1f2937; color:#9ca3af; border:1px solid #374151; }
+
+  /* type tags */
+  .tag-fe    { background:#1e3a5f22; color:#60a5fa; border:1px solid #1e3a5f; }
+  .tag-be    { background:#06412022; color:#34d399; border:1px solid #065f46; }
+  .tag-full  { background:#4c1d9522; color:#a78bfa; border:1px solid #4c1d95; }
+  .tag-infra { background:#37415122; color:#9ca3af; border:1px solid #4b5563; }
+  .tag-test  { background:#7c2d1222; color:#fb923c; border:1px solid #7c2d12; }
+  .tag-doc   { background:#31143622; color:#e879f9; border:1px solid #4a044e; }
+
+  /* priority dot */
+  .prio-high   { background: #ef4444; }
+  .prio-medium { background: #f59e0b; }
+  .prio-low    { background: #22c55e; }
+
+  /* col header accent lines */
+  .col-todo     { border-top: 3px solid #6366f1; }
+  .col-progress { border-top: 3px solid #f59e0b; }
+  .col-review   { border-top: 3px solid #8b5cf6; }
+  .col-done     { border-top: 3px solid #10b981; }
+
+  /* hero gradient */
+  .hero-bg {
+    background: linear-gradient(135deg, #0f1117 0%, #1a1d2e 50%, #0f1117 100%);
+    border-bottom: 1px solid #1f2937;
+  }
+
+  .subtask-row { border-left: 2px solid #374151; }
+  .subtask-row:hover { border-left-color: #6366f1; }
+
+  .progress-bar { height: 4px; background: #1f2937; border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, #6366f1, #8b5cf6); transition: width .3s; }
+
+  .stat-card { background: #1a1d27; border: 1px solid #1f2937; border-radius: 12px; }
+
+  @keyframes fadeInUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  .card { animation: fadeInUp .25s ease both; }
+
+  /* Modal styles */
+  .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; z-index: 50; }
+  .modal { background: #1a1d2e; border: 1px solid #1f2937; border-radius: 12px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; }
+  .modal-header { border-bottom: 1px solid #1f2937; padding: 20px; }
+  .modal-body { padding: 20px; }
+  .modal-footer { border-top: 1px solid #1f2937; padding: 20px; display: flex; gap: 10px; justify-content: flex-end; }
+
+  .form-group { margin-bottom: 16px; }
+  .form-label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: #a1a5b1; margin-bottom: 6px; }
+  .form-input, .form-select, .form-textarea { width: 100%; padding: 8px 12px; background: #0f1117; border: 1px solid #1f2937; border-radius: 6px; color: #e2e8f0; font-size: 14px; font-family: inherit; }
+  .form-textarea { resize: vertical; min-height: 80px; }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); }
+
+  .subtask-input { display: flex; gap: 8px; margin-bottom: 8px; }
+  .subtask-input input { flex: 1; }
+  .subtask-item { background: #0f1117; padding: 8px 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+  .subtask-item button { background: none; border: none; color: #f87171; cursor: pointer; font-size: 16px; }
+
+  .btn { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; font-size: 13px; transition: all .15s; }
+  .btn-primary { background: #6366f1; color: white; }
+  .btn-primary:hover { background: #4f46e5; }
+  .btn-secondary { background: #1f2937; color: #e2e8f0; }
+  .btn-secondary:hover { background: #374151; }
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- HERO HEADER -->
+<div class="hero-bg px-6 py-6">
+  <div class="max-w-screen-2xl mx-auto">
+    <div class="flex flex-wrap items-start justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-3 mb-1">
+          <span class="mono text-xs text-indigo-400 tracking-widest uppercase">Sprint 1 · Semanas 1–3</span>
+          <span class="mono text-xs bg-yellow-900/40 text-yellow-400 border border-yellow-800 px-2 py-0.5 rounded">EM CURSO</span>
+        </div>
+        <h1 class="text-2xl font-bold text-white tracking-tight">Integra-te <span class="text-indigo-400">—</span> Sprint Planning</h1>
+        <p class="text-slate-400 text-sm mt-1">Fundação António Aleixo · Django 5 + React 18 + PostgreSQL · Docker</p>
+      </div>
+
+      <!-- TEAM LEGEND -->
+      <div class="flex flex-wrap gap-2 items-center">
+        <span class="chip chip-adrien">Adrien</span>
+        <span class="chip chip-diogo">Diogo</span>
+        <span class="chip chip-giulio">Giulio</span>
+        <span class="chip chip-cristian">Cristian</span>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
+      <div class="stat-card px-4 py-3">
+        <div class="mono text-xs text-slate-500 mb-1">TOTAL TASKS</div>
+        <div class="text-2xl font-bold text-white" id="stat-total">0</div>
+      </div>
+      <div class="stat-card px-4 py-3">
+        <div class="mono text-xs text-yellow-500 mb-1">IN PROGRESS</div>
+        <div class="text-2xl font-bold text-yellow-400" id="stat-progress">0</div>
+      </div>
+      <div class="stat-card px-4 py-3">
+        <div class="mono text-xs text-green-500 mb-1">DONE</div>
+        <div class="text-2xl font-bold text-green-400" id="stat-done">0</div>
+      </div>
+      <div class="stat-card px-4 py-3">
+        <div class="mono text-xs text-indigo-400 mb-1">PROGRESSO</div>
+        <div class="text-2xl font-bold text-indigo-400" id="stat-pct">0%</div>
+        <div class="progress-bar mt-1"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOARD -->
+<div class="overflow-x-auto px-6 py-6">
+<div class="flex gap-4 max-w-screen-2xl mx-auto" style="min-width: max-content;">
+
+  <!-- ═══════════════ BACKLOG / TO DO ═══════════════ -->
+  <div class="board-col">
+    <div class="col-todo bg-[#13151f] rounded-xl p-3">
+      <div class="flex items-center justify-between mb-3 px-1">
+        <span class="font-semibold text-slate-200 text-sm">📋 Backlog / To Do</span>
+        <div class="flex items-center gap-2">
+          <span class="mono text-xs bg-indigo-900/50 text-indigo-300 px-2 py-0.5 rounded-full col-count" data-col="todo">0</span>
+          <button onclick="openCreateCardModal('col-todo')" class="text-indigo-400 hover:text-indigo-300 text-lg font-bold" title="Adicionar task">+</button>
+        </div>
+      </div>
+      <div class="space-y-2" id="col-todo">
+
+        <!-- BE-01 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">BE-01</span>
+                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0" title="Alta prioridade"></span>
+                <span class="tag-be chip text-xs rounded">BE</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Modelos de dados core (Django ORM)</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Definir e migrar os modelos Discipline, Topic, Resource, Game e Book. Base de toda a lógica de conteúdo.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-adrien">Adrien</span>
+            <span class="chip chip-diogo">Diogo</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Modelo Discipline (name, slug, icon, color)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Adrien · Seed via fixtures para as 3 disciplinas.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Modelo Topic com FK Discipline + school_year</div>
+              <div class="text-xs text-slate-500 mt-0.5">Adrien · choices 1–6 (1.º ao 6.º ano). Slug único por disciplina.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Modelo Resource (title, body, resource_type, file, url)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · types: video / pdf / text / exercise. FK para Topic.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Modelos Game e Book</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · Game: age_range, is_downloadable, area. Book: author, summary, themes.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Migrations + fixtures de seed (make migrate + make seed)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Adrien · Dados de exemplo para dev imediato.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BE-02 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">BE-02</span>
+                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
+                <span class="tag-be chip text-xs rounded">BE</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">API REST com DRF + OpenAPI (Swagger)</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Serializers, ViewSets, routers em /api/v1/. Documentação automática via drf-spectacular em /api/docs/.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-adrien">Adrien</span>
+            <span class="chip chip-diogo">Diogo</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Serializers para todos os modelos</div>
+              <div class="text-xs text-slate-500 mt-0.5">Adrien · Read serializers públicos. Nested onde fizer sentido (Topic → Discipline).</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">ViewSets e routers em /api/v1/</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · /disciplines/ | /topics/?discipline=&year= | /resources/?topic= | /games/ | /books/</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Configurar drf-spectacular + Swagger UI em /api/docs/</div>
+              <div class="text-xs text-slate-500 mt-0.5">Adrien · @extend_schema nos endpoints relevantes.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Filtros full-text (django-filter + PostgreSQL search)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · ?search= filtra Resources. ?discipline= e ?year= filtram Topics.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BE-03 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">BE-03</span>
+                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
+                <span class="tag-be chip text-xs rounded">BE</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Django Admin customizado (CMS para o cliente)</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Backoffice intuitivo para a equipa da Fundação gerir conteúdos sem formação técnica. Requisito crítico.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-adrien">Adrien</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Registar modelos com ModelAdmin customizado</div>
+              <div class="text-xs text-slate-500 mt-0.5">list_display, list_filter, search_fields por modelo.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Instalar django-jazzmin ou unfold para UI amigável</div>
+              <div class="text-xs text-slate-500 mt-0.5">Dashboard com logo Integra-te, cores do projeto, sidebar organizada por secções.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Auto-criação de superuser no entrypoint.sh</div>
+              <div class="text-xs text-slate-500 mt-0.5">Via env vars DJANGO_SUPERUSER_*. Sem interação manual.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FE-01 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">FE-01</span>
+                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
+                <span class="tag-fe chip text-xs rounded">FE</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Tailwind config + Router + Cliente Axios</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Paleta de cores Integra-te em Tailwind, React Router v6 com todas as rotas, cliente Axios com env var.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-giulio">Giulio</span>
+            <span class="chip chip-diogo">Diogo</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Configurar paleta Integra-te em tailwind.config.js</div>
+              <div class="text-xs text-slate-500 mt-0.5">Giulio · Azul, amarelo, salmão, roxo, verde, rosa. Gradiente amarelo→rosa.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Configurar React Router v6 com todas as rotas</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · /, /aprender, /aprender/:disciplina, /resolver, /jogar, /ler, /sobre, /contactos</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Cliente Axios em src/api/client.js</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · VITE_API_URL via env. Interceptor para erros globais.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Definir estrutura de pastas: components/ pages/ hooks/ api/ assets/</div>
+              <div class="text-xs text-slate-500 mt-0.5">Giulio · Convenção de nomes acordada. README atualizado.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FE-02 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">FE-02</span>
+                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
+                <span class="tag-fe chip text-xs rounded">FE</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Componentes base + identidade visual</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Header sticky, Footer com logótipos Portugal 2030 (obrigatórios), componentes reutilizáveis.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-giulio">Giulio</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Header com sticky nav e logótipo Integra-te</div>
+              <div class="text-xs text-slate-500 mt-0.5">Hamburger menu responsivo em mobile. Todos os links do menu.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Footer com links úteis, RGPD, logótipos EU/Portugal 2030</div>
+              <div class="text-xs text-slate-500 mt-0.5">⚠️ Logótipos obrigatórios por co-financiamento europeu.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Componentes base: Button, Card, DisciplineBlock, SectionTitle, Spinner</div>
+              <div class="text-xs text-slate-500 mt-0.5">Variantes de cor e tamanho. aria-label onde necessário.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FE-03 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">FE-03</span>
+                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
+                <span class="tag-full chip text-xs rounded">FULL</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Homepage completa (ligada à API)</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Hero section com acesso às 4 áreas, Sobre o Projeto, secção de apoio a famílias. Dados reais da API.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-giulio">Giulio</span>
+            <span class="chip chip-diogo">Diogo</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Hero section com gradiente e 4 blocos de acesso rápido</div>
+              <div class="text-xs text-slate-500 mt-0.5">Giulio · Cards coloridos por área. Mobile-first.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Secção "Sobre o Projeto" estática</div>
+              <div class="text-xs text-slate-500 mt-0.5">Giulio · Missão, objetivos, público-alvo. Texto acessível (baixa literacia).</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Hook useDisciplines() a consumir a API</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · React Query / SWR. Loading + error states tratados.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CRS-01 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-pink-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">CRS-01</span>
+                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
+                <span class="tag-fe chip text-xs rounded">FE</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Página "Sobre" + Página "Contactos"</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Páginas estáticas com componentes, formulário de contacto e endpoint simples de POST.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-cristian">Cristian</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Criar página /sobre (conteúdo estático)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Usar SectionTitle e Card do FE-02. História, equipa, missão, impacto.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Criar página /contactos com formulário (nome, email, mensagem)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Validação básica no frontend. Estado de sucesso/erro visível.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Endpoint Django POST /api/v1/contact/</div>
+              <div class="text-xs text-slate-500 mt-0.5">Serializer simples + retorna 200 OK. Code review do Adrien obrigatório.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Testes unitários para o endpoint de contacto</div>
+              <div class="text-xs text-slate-500 mt-0.5">APITestCase: POST válido e POST sem campos obrigatórios.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CRS-02 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-pink-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">CRS-02</span>
+                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
+                <span class="tag-be chip text-xs rounded">BE</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Testes de integração para API REST</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Testes de endpoints GET, POST de todas as rotas principais. Validação de permissões e erros HTTP.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-cristian">Cristian</span>
+            <span class="chip chip-adrien">Adrien</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">APITestCase para GET /api/v1/disciplines/</div>
+              <div class="text-xs text-slate-500 mt-0.5">Verificar estrutura de resposta e paginação.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Testes de autênticação e permissões</div>
+              <div class="text-xs text-slate-500 mt-0.5">Verificar que endpoints públicos retornam 200 e privados retornam 401.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Testes de filtros e search</div>
+              <div class="text-xs text-slate-500 mt-0.5">?search=, ?discipline=, ?year= devem retornar os resultados esperados.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CRS-03 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-pink-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">CRS-03</span>
+                <span class="w-2 h-2 rounded-full prio-low flex-shrink-0"></span>
+                <span class="tag-doc chip text-xs rounded">DOC</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Frontend: Página de Recursos "Aprender"</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Listar disciplinas, tópicos e recursos com filtros. Com dados reais da API.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-cristian">Cristian</span>
+            <span class="chip chip-giulio">Giulio</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Componente DisciplineList com cards clicáveis</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · Listar todas as disciplinas com ícone e cor.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Componente TopicList com filtro por disciplina e ano</div>
+              <div class="text-xs text-slate-500 mt-0.5">Giulio · Dropdown de seleção. Dados do hook useTopics().</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Componente ResourceCard com preview inline</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · Card clicável para abrir o recurso (video, PDF, texto).</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FE-04 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-blue-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">FE-04</span>
+                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
+                <span class="tag-fe chip text-xs rounded">FE</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Página de Jogos com grid interativo</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Grid responsivo de jogos, filtros por idade e área de interesse. Integração com API.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-giulio">Giulio</span>
+            <span class="chip chip-cristian">Cristian</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Componente GameCard com imagem, título e descrição</div>
+              <div class="text-xs text-slate-500 mt-0.5">Giulio · Estados: normal, hover com botão "Jogar".</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Hook useGames() e filtros por age_range e area</div>
+              <div class="text-xs text-slate-500 mt-0.5">Cristian · Dropdown de idade (4+, 6+, 9+) e área.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Modal para detalhe do jogo + botão download (se aplicável)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Giulio · Download link para jogos offline.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BE-04 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-teal-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">BE-04</span>
+                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
+                <span class="tag-be chip text-xs rounded">BE</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Sistema de permissões e autenticação</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Preparar estrutura para authentication (JWT ou sessions). Groups de permissões para admin.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-adrien">Adrien</span>
+            <span class="chip chip-diogo">Diogo</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Configurar Django Groups (Admin, Editor, Viewer)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Adrien · Permissões de leitura/escrita por grupo.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Autenticação DRF (Token ou JWT)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · Implementar login endpoint + token issuance.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">IsAuthenticated permissions em endpoints críticos</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · POST/PUT/DELETE protegidos. GET público.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BE-05 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-emerald-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">BE-05</span>
+                <span class="w-2 h-2 rounded-full prio-low flex-shrink-0"></span>
+                <span class="tag-test chip text-xs rounded">TEST</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Cobertura de testes backend (mínimo 80%)</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Testes unitários para helpers, validators. Testes de models com factory boy.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-adrien">Adrien</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Factory Boy para criação de test data</div>
+              <div class="text-xs text-slate-500 mt-0.5">Adrien · DisciplineFactory, TopicFactory, ResourceFactory.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Testes de validação de modelos</div>
+              <div class="text-xs text-slate-500 mt-0.5">Adrien · Campos obrigatórios, unique_together, slugs.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Relatório de cobertura com coverage.py</div>
+              <div class="text-xs text-slate-500 mt-0.5">Adrien · Target: 80% min. CI valida coverage em cada PR.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FE-05 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-blue-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">FE-05</span>
+                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
+                <span class="tag-fe chip text-xs rounded">FE</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Página de Livros com modal e detalhes</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Grid de livros com busca, filtros por tema. Links externos para compra/biblioteca.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-diogo">Diogo</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Componente BookCard com capa, autor e resumo</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · Imagem responsiva, fallback para sem capa.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Hook useBooks() com busca por autor/título</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · Input de search que filtra em tempo real.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Modal BookDetail com sinopse completa e links</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · Temas, links (Amazon, Wook, biblioteca municipal).</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FE-06 -->
+        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-pink-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">FE-06</span>
+                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
+                <span class="tag-full chip text-xs rounded">FULL</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">Responsividade completa e testes E2E</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Mobile-first checks em todos os breakpoints. Testes Cypress em fluxos críticos.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-diogo">Diogo</span>
+            <span class="chip chip-giulio">Giulio</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Verificação responsiva (mobile 320px, tablet 768px, desktop 1920px)</div>
+              <div class="text-xs text-slate-500 mt-0.5">Giulio · Screenshots de cada breakpoint. Sem overflow.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Testes Cypress para fluxos principais</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · Homepage → Aprender → Selecionar disciplina → Ver recurso.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Audit de acessibilidade (axe) no CI</div>
+              <div class="text-xs text-slate-500 mt-0.5">Diogo · Cores, contraste, labels em formulários.</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end col-todo -->
+    </div>
+  </div>
+
+  <!-- ═══════════════ IN PROGRESS ═══════════════ -->
+  <div class="board-col">
+    <div class="col-progress bg-[#13151f] rounded-xl p-3">
+      <div class="flex items-center justify-between mb-3 px-1">
+        <span class="font-semibold text-slate-200 text-sm">⚡ In Progress</span>
+        <div class="flex items-center gap-2">
+          <span class="mono text-xs bg-yellow-900/50 text-yellow-300 px-2 py-0.5 rounded-full col-count" data-col="progress">0</span>
+          <button onclick="openCreateCardModal('col-progress')" class="text-yellow-400 hover:text-yellow-300 text-lg font-bold" title="Adicionar task">+</button>
+        </div>
+      </div>
+      <div class="space-y-2" id="col-progress">
+
+        <!-- CI-01 -->
+        <div class="card bg-[#1a1d2e] border border-yellow-900/50 hover:border-yellow-700 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-500">CI-01</span>
+                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
+                <span class="tag-infra chip text-xs rounded">INFRA</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-100 leading-snug">GitHub Actions CI pipeline</div>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Lint (ruff + ESLint) e testes em cada PR. Branch protection em main.</p>
+            </div>
+            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-adrien">Adrien</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Criar .github/workflows/ci.yml</div>
+              <div class="text-xs text-slate-500 mt-0.5">Jobs: lint-backend, lint-frontend, test-backend. Trigger em PR para main.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Configurar ruff.toml e .eslintrc</div>
+              <div class="text-xs text-slate-500 mt-0.5">Regras base para Python e React/Tailwind.</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r">
+              <div class="text-xs font-medium text-slate-300">Branch protection em main no GitHub</div>
+              <div class="text-xs text-slate-500 mt-0.5">Require PR review + CI verde para merge.</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end col-progress -->
+
+      <div class="mt-4 border-2 border-dashed border-yellow-900/30 rounded-lg p-3 text-center text-xs text-slate-600">
+        Mover tarefas para cá quando iniciadas
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ IN REVIEW ═══════════════ -->
+  <div class="board-col">
+    <div class="col-review bg-[#13151f] rounded-xl p-3">
+      <div class="flex items-center justify-between mb-3 px-1">
+        <span class="font-semibold text-slate-200 text-sm">🔍 In Review</span>
+        <div class="flex items-center gap-2">
+          <span class="mono text-xs bg-purple-900/50 text-purple-300 px-2 py-0.5 rounded-full col-count" data-col="review">0</span>
+          <button onclick="openCreateCardModal('col-review')" class="text-purple-400 hover:text-purple-300 text-lg font-bold" title="Adicionar task">+</button>
+        </div>
+      </div>
+      <div class="space-y-2" id="col-review">
+      </div>
+      <div class="mt-2 border-2 border-dashed border-purple-900/30 rounded-lg p-4 text-center text-xs text-slate-600">
+        PR aberto + code review pendente
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ DONE ═══════════════ -->
+  <div class="board-col">
+    <div class="col-done bg-[#13151f] rounded-xl p-3">
+      <div class="flex items-center justify-between mb-3 px-1">
+        <span class="font-semibold text-slate-200 text-sm">✅ Done</span>
+        <div class="flex items-center gap-2">
+          <span class="mono text-xs bg-green-900/50 text-green-300 px-2 py-0.5 rounded-full col-count" data-col="done">0</span>
+          <button onclick="openCreateCardModal('col-done')" class="text-green-400 hover:text-green-300 text-lg font-bold" title="Adicionar task">+</button>
+        </div>
+      </div>
+      <div class="space-y-2" id="col-done">
+
+        <!-- INFRA-00 já feito -->
+        <div class="card bg-[#141a14] border border-green-900/40 rounded-xl p-3 opacity-70" onclick="toggleCard(event)">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="mono text-xs text-slate-600">INFRA-00</span>
+                <span class="tag-infra chip text-xs rounded">INFRA</span>
+                <span class="mono text-xs text-green-600">✓ concluído</span>
+              </div>
+              <div class="font-semibold text-sm text-slate-400 leading-snug">Estrutura base do projeto</div>
+              <p class="text-xs text-slate-600 mt-1">Docker Compose (frontend + backend + db), Makefile, Dockerfiles, repositório Git configurado.</p>
+            </div>
+            <span class="chevron text-slate-600 text-xs mt-1">▾</span>
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="chip chip-all">Equipa</span>
+          </div>
+          <div class="subtasks mt-3 space-y-2">
+            <div class="subtask-row pl-3 py-1 rounded-r opacity-60">
+              <div class="text-xs font-medium text-slate-500 line-through">docker-compose.yml com serviços db, backend, frontend</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r opacity-60">
+              <div class="text-xs font-medium text-slate-500 line-through">Makefile com targets base</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r opacity-60">
+              <div class="text-xs font-medium text-slate-500 line-through">Dockerfiles para Django e React/Vite</div>
+            </div>
+            <div class="subtask-row pl-3 py-1 rounded-r opacity-60">
+              <div class="text-xs font-medium text-slate-500 line-through">Repositório Git com .gitignore e README inicial</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- end board flex -->
+</div><!-- end overflow-x-auto -->
+
+<!-- MODAL PARA CRIAR NOVA TASK -->
+<div id="createCardModal" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="text-lg font-bold text-white">Criar nova task</h2>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">ID da task (ex: BE-06)</label>
+        <input type="text" id="cardId" class="form-input" placeholder="BE-06">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Título</label>
+        <input type="text" id="cardTitle" class="form-input" placeholder="Setup do projeto X">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Descrição</label>
+        <textarea id="cardDesc" class="form-textarea" placeholder="Descrição detalhada da task..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tipo</label>
+        <select id="cardType" class="form-select">
+          <option value="fe">FE - Frontend</option>
+          <option value="be">BE - Backend</option>
+          <option value="full">FULL - Full Stack</option>
+          <option value="infra">INFRA - Infraestrutura</option>
+          <option value="test">TEST - Testes</option>
+          <option value="doc">DOC - Documentação</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Prioridade</label>
+        <select id="cardPrio" class="form-select">
+          <option value="high">🔴 Alta</option>
+          <option value="medium">🟡 Média</option>
+          <option value="low">🟢 Baixa</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Membros atribuídos</label>
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="member-adrien" class="w-4 h-4" style="accent-color: #93c5fd;">
+            <span class="chip chip-adrien">Adrien</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="member-diogo" class="w-4 h-4" style="accent-color: #6ee7b7;">
+            <span class="chip chip-diogo">Diogo</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="member-giulio" class="w-4 h-4" style="accent-color: #fdba74;">
+            <span class="chip chip-giulio">Giulio</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="member-cristian" class="w-4 h-4" style="accent-color: #d8b4fe;">
+            <span class="chip chip-cristian">Cristian</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subtasks</label>
+        <div class="subtask-input">
+          <input type="text" id="subtaskInput" class="form-input" placeholder="Adicionar nova subtask...">
+          <button onclick="addSubtaskField()" class="btn btn-primary btn-sm">Adicionar</button>
+        </div>
+        <div id="subtasksList"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button onclick="closeCreateCardModal()" class="btn btn-secondary">Cancelar</button>
+      <button onclick="saveNewCard()" class="btn btn-primary">Criar task</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     GUIA DE ACOMPANHAMENTO DO SPRINT
+═══════════════════════════════════════════════════════ -->
+<div class="max-w-screen-2xl mx-auto px-6 pb-12">
+  <div class="border-t border-[#1f2937] pt-8">
+    <h2 class="text-xl font-bold text-white mb-1">📋 Como acompanhar este Sprint no dia a dia</h2>
+    <p class="text-slate-400 text-sm mb-6">Guia de operações para garantir o sucesso do Sprint 1 — Projeto Integra-te</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+
+      <!-- Dia 1 -->
+      <div class="bg-[#1a1d2e] border border-[#1f2937] rounded-xl p-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-7 h-7 rounded-lg bg-indigo-900/60 border border-indigo-800 flex items-center justify-center text-indigo-300 font-bold text-xs">1</span>
+          <span class="font-semibold text-slate-200 text-sm">Sprint Kickoff (Dia 1)</span>
+        </div>
+        <ul class="space-y-2 text-xs text-slate-400">
+          <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Reunião de 30min: rever este board em conjunto e confirmar quem pega em quê.</li>
+          <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Adrien: arrancar CI-01 (GitHub Actions) — desbloqueia PRs para todos.</li>
+          <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Adrien + Diogo: começar BE-01 (modelos) — o frontend depende da API.</li>
+          <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Giulio: começar FE-01 (Tailwind config + Router) — pode avançar em paralelo.</li>
+          <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Cristian: ler o código base e fazer setup local. Só começa CRS-01 depois de FE-02 estar pronto.</li>
+        </ul>
+      </div>
+
+      <!-- Daily Standup -->
+      <div class="bg-[#1a1d2e] border border-[#1f2937] rounded-xl p-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-7 h-7 rounded-lg bg-yellow-900/60 border border-yellow-800 flex items-center justify-center text-yellow-300 font-bold text-xs">2</span>
+          <span class="font-semibold text-slate-200 text-sm">Daily Standup (cada sessão)</span>
+        </div>
+        <ul class="space-y-2 text-xs text-slate-400">
+          <li class="flex gap-2"><span class="text-yellow-400 flex-shrink-0">→</span>Máximo 10 minutos. 3 perguntas por pessoa:</li>
+          <li class="flex gap-2 pl-4"><span class="text-slate-600">·</span><span><strong class="text-slate-300">O que fiz</strong> desde a última sessão?</span></li>
+          <li class="flex gap-2 pl-4"><span class="text-slate-600">·</span><span><strong class="text-slate-300">O que vou fazer</strong> hoje?</span></li>
+          <li class="flex gap-2 pl-4"><span class="text-slate-600">·</span><span><strong class="text-slate-300">Estou bloqueado</strong> em alguma coisa?</span></li>
+          <li class="flex gap-2"><span class="text-yellow-400 flex-shrink-0">→</span>Atualizar o board (mover cards) logo no início da standup.</li>
+          <li class="flex gap-2"><span class="text-yellow-400 flex-shrink-0">→</span>Bloqueios resolvidos fora da standup, não durante.</li>
+        </ul>
+      </div>
+
+      <!-- Git Workflow -->
+      <div class="bg-[#1a1d2e] border border-[#1f2937] rounded-xl p-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-7 h-7 rounded-lg bg-green-900/60 border border-green-800 flex items-center justify-center text-green-300 font-bold text-xs">3</span>
+          <span class="font-semibold text-slate-200 text-sm">Git Workflow obrigatório</span>
+        </div>
+        <ul class="space-y-2 text-xs text-slate-400">
+          <li class="flex gap-2"><span class="text-green-400 flex-shrink-0">→</span>Branch por task: <span class="mono text-green-300 bg-green-950 px-1 rounded">feat/BE-01-django-models</span></li>
+          <li class="flex gap-2"><span class="text-green-400 flex-shrink-0">→</span>Commits com prefixo: <span class="mono text-green-300 bg-green-950 px-1 rounded">feat:</span> <span class="mono text-green-300 bg-green-950 px-1 rounded">fix:</span> <span class="mono text-green-300 bg-green-950 px-1 rounded">test:</span></li>
+          <li class="flex gap-2"><span class="text-green-400 flex-shrink-0">→</span>PR aberto → task vai para <strong class="text-slate-300">In Review</strong>.</li>
+          <li class="flex gap-2"><span class="text-green-400 flex-shrink-0">→</span>Code review de pelo menos 1 pessoa (Adrien revê tudo do Cristian).</li>
+          <li class="flex gap-2"><span class="text-green-400 flex-shrink-0">→</span>CI verde + aprovação → merge → task vai para <strong class="text-slate-300">Done</strong>.</li>
+          <li class="flex gap-2"><span class="text-green-400 flex-shrink-0">→</span>Nunca fazer push direto para main.</li>
+        </ul>
+      </div>
+
+      <!-- Dependências críticas -->
+      <div class="bg-[#1a1d2e] border border-red-900/40 rounded-xl p-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-7 h-7 rounded-lg bg-red-900/60 border border-red-800 flex items-center justify-center text-red-300 font-bold text-xs">4</span>
+          <span class="font-semibold text-slate-200 text-sm">Dependências críticas</span>
+        </div>
+        <ul class="space-y-2 text-xs text-slate-400">
+          <li class="flex gap-2"><span class="text-red-400 flex-shrink-0">⚠</span><span><strong class="text-slate-300">BE-01 desbloqueia BE-02</strong> — API só pode ser construída depois dos modelos.</span></li>
+          <li class="flex gap-2"><span class="text-red-400 flex-shrink-0">⚠</span><span><strong class="text-slate-300">FE-02 desbloqueia CRS-01</strong> — Cristian precisa dos componentes base.</span></li>
+          <li class="flex gap-2"><span class="text-red-400 flex-shrink-0">⚠</span><span><strong class="text-slate-300">BE-02 desbloqueia FE-03</strong> — Homepage precisa de dados reais da API.</span></li>
+          <li class="flex gap-2"><span class="text-red-400 flex-shrink-0">⚠</span><span><strong class="text-slate-300">CI-01 deve ser concluído primeiro</strong> — todos os PRs dependem do pipeline.</span></li>
+          <li class="flex gap-2"><span class="text-red-400 flex-shrink-0">⚠</span><span>FE-01 e BE-01 podem correr <strong class="text-slate-300">em paralelo</strong> — nenhum bloqueia o outro.</span></li>
+        </ul>
+      </div>
+
+      <!-- Mid-sprint check -->
+      <div class="bg-[#1a1d2e] border border-[#1f2937] rounded-xl p-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-7 h-7 rounded-lg bg-purple-900/60 border border-purple-800 flex items-center justify-center text-purple-300 font-bold text-xs">5</span>
+          <span class="font-semibold text-slate-200 text-sm">Mid-Sprint Check (Semana 2)</span>
+        </div>
+        <ul class="space-y-2 text-xs text-slate-400">
+          <li class="flex gap-2"><span class="text-purple-400 flex-shrink-0">→</span>Reunião de 45min a meio do sprint para avaliar progresso.</li>
+          <li class="flex gap-2"><span class="text-purple-400 flex-shrink-0">→</span>Meta mínima: BE-01, BE-02 e FE-01 em Done ou Review.</li>
+          <li class="flex gap-2"><span class="text-purple-400 flex-shrink-0">→</span>Se BE-01 ainda não está concluído: Adrien + Diogo ajudam-se mutuamente — é o bloqueador maior.</li>
+          <li class="flex gap-2"><span class="text-purple-400 flex-shrink-0">→</span>Rever carga de trabalho do Cristian — ajustar se necessário.</li>
+          <li class="flex gap-2"><span class="text-purple-400 flex-shrink-0">→</span>Identificar o que pode escalar para o Sprint 2 se necessário.</li>
+        </ul>
+      </div>
+
+      <!-- Sprint Review -->
+      <div class="bg-[#1a1d2e] border border-[#1f2937] rounded-xl p-4">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-7 h-7 rounded-lg bg-indigo-900/60 border border-indigo-800 flex items-center justify-center text-indigo-300 font-bold text-xs">6</span>
+          <span class="font-semibold text-slate-200 text-sm">Sprint Review + Retrospetiva (Semana 3)</span>
+        </div>
+        <ul class="space-y-2 text-xs text-slate-400">
+          <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Demo ao formador: app a correr end-to-end em dev (<span class="mono text-indigo-300 bg-indigo-950 px-1 rounded">make start-dev</span>).</li>
+          <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Mostrar: Admin Django funcional, API em /api/docs/, Homepage ligada à API.</li>
+          <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Retrospetiva rápida (15min): O que correu bem? O que mudar? Uma ação concreta para o Sprint 2.</li>
+          <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Atualizar o backlog do Sprint 2 com o que ficou por fazer.</li>
+          <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Git tag <span class="mono text-indigo-300 bg-indigo-950 px-1 rounded">sprint1-end</span> no último commit do sprint.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Definition of Done -->
+    <div class="mt-4 bg-[#1a1d2e] border border-green-900/40 rounded-xl p-4">
+      <h3 class="font-semibold text-green-400 text-sm mb-3">✅ Definition of Done — uma task só vai para "Done" quando:</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>Código em PR com branch própria</div>
+        <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>CI pipeline verde (lint + testes)</div>
+        <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>Code review aprovado (≥1 pessoa)</div>
+        <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>Merged em main sem conflitos</div>
+        <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>Funciona com <span class="mono text-slate-300">make start-dev</span></div>
+        <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>Testes escritos (backend obrigatório)</div>
+        <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>Sem TODO críticos não documentados</div>
+        <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>Board atualizado na mesma sessão</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let draggedElement = null;
+let currentCardColumn = null;
+let subtasks = [];
+
+function toggleCard(event) {
+  // Prevent toggle if clicking on draggable element
+  if (event.target.closest('.card').draggable) return;
+  const card = event.currentTarget;
+  card.classList.toggle('open');
+}
+
+// Modal functions
+function openCreateCardModal(columnId) {
+  currentCardColumn = columnId;
+  subtasks = [];
+  document.getElementById('cardId').value = '';
+  document.getElementById('cardTitle').value = '';
+  document.getElementById('cardDesc').value = '';
+  document.getElementById('cardType').value = 'be';
+  document.getElementById('cardPrio').value = 'medium';
+  document.getElementById('member-adrien').checked = false;
+  document.getElementById('member-diogo').checked = false;
+  document.getElementById('member-giulio').checked = false;
+  document.getElementById('member-cristian').checked = false;
+  document.getElementById('subtaskInput').value = '';
+  document.getElementById('subtasksList').innerHTML = '';
+  document.getElementById('createCardModal').classList.remove('hidden');
+}
+
+function closeCreateCardModal() {
+  document.getElementById('createCardModal').classList.add('hidden');
+  currentCardColumn = null;
+  subtasks = [];
+}
+
+function addSubtaskField() {
+  const input = document.getElementById('subtaskInput');
+  const text = input.value.trim();
+  if (!text) return;
+  
+  subtasks.push(text);
+  renderSubtasks();
+  input.value = '';
+}
+
+function removeSubtask(index) {
+  subtasks.splice(index, 1);
+  renderSubtasks();
+}
+
+function renderSubtasks() {
+  const container = document.getElementById('subtasksList');
+  container.innerHTML = subtasks.map((st, i) => `
+    <div class="subtask-item">
+      <span>${st}</span>
+      <button onclick="removeSubtask(${i})">×</button>
+    </div>
+  `).join('');
+}
+
+function saveNewCard() {
+  const id = document.getElementById('cardId').value.trim();
+  const title = document.getElementById('cardTitle').value.trim();
+  const desc = document.getElementById('cardDesc').value.trim();
+  const type = document.getElementById('cardType').value;
+  const prio = document.getElementById('cardPrio').value;
+  
+  if (!id || !title) {
+    alert('ID e Título são obrigatórios!');
+    return;
+  }
+
+  const members = [];
+  if (document.getElementById('member-adrien').checked) members.push({name: 'Adrien', class: 'chip-adrien'});
+  if (document.getElementById('member-diogo').checked) members.push({name: 'Diogo', class: 'chip-diogo'});
+  if (document.getElementById('member-giulio').checked) members.push({name: 'Giulio', class: 'chip-giulio'});
+  if (document.getElementById('member-cristian').checked) members.push({name: 'Cristian', class: 'chip-cristian'});
+
+  if (members.length === 0) {
+    alert('Seleciona pelo menos um membro!');
+    return;
+  }
+
+  // Criar o card HTML
+  const tagClass = `tag-${type}`;
+  const tagDisplay = type === 'full' ? 'FULL' : type.toUpperCase();
+  const prioClass = `prio-${prio}`;
+  
+  let subtaskHtml = '';
+  if (subtasks.length > 0) {
+    subtaskHtml = `
+      <div class="subtasks mt-3 space-y-2">
+        ${subtasks.map(st => `
+          <div class="subtask-row pl-3 py-1 rounded-r">
+            <div class="text-xs font-medium text-slate-300">${st}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  const memberChips = members.map(m => `<span class="chip chip-${m.class.split('-')[1]}">${m.name}</span>`).join('');
+
+  const cardHTML = `
+    <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+      <div class="flex items-start justify-between gap-2">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="mono text-xs text-slate-500">${id}</span>
+            <span class="w-2 h-2 rounded-full ${prioClass} flex-shrink-0"></span>
+            <span class="tag-${type} chip text-xs rounded">${tagDisplay}</span>
+          </div>
+          <div class="font-semibold text-sm text-slate-100 leading-snug">${title}</div>
+          <p class="text-xs text-slate-400 mt-1 leading-relaxed">${desc}</p>
+        </div>
+        <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+      </div>
+      <div class="flex flex-wrap gap-1 mt-2">
+        ${memberChips}
+      </div>
+      ${subtaskHtml}
+    </div>
+  `;
+
+  const column = document.getElementById(currentCardColumn);
+  column.insertAdjacentHTML('beforeend', cardHTML);
+  
+  // Setup drag para o novo card
+  const newCard = column.lastElementChild;
+  newCard.addEventListener('dragstart', (e) => {
+    draggedElement = newCard;
+    newCard.style.opacity = '0.5';
+    e.dataTransfer.effectAllowed = 'move';
+  });
+
+  newCard.addEventListener('dragend', () => {
+    newCard.style.opacity = '1';
+    draggedElement = null;
+  });
+
+  updateStats();
+  closeCreateCardModal();
+}
+
+// Drag & Drop functionality
+function setupDragAndDrop() {
+  const cards = document.querySelectorAll('.card[draggable="true"]');
+  
+  cards.forEach(card => {
+    card.addEventListener('dragstart', (e) => {
+      draggedElement = card;
+      card.style.opacity = '0.5';
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/html', card.innerHTML);
+    });
+
+    card.addEventListener('dragend', () => {
+      card.style.opacity = '1';
+      draggedElement = null;
+    });
+  });
+
+  // Setup drop zones
+  const columns = document.querySelectorAll('[id^="col-"]');
+  columns.forEach(column => {
+    column.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      column.style.borderRadius = '8px';
+      column.style.backgroundColor = 'rgba(99, 102, 241, 0.1)';
+    });
+
+    column.addEventListener('dragleave', (e) => {
+      // Check if dragging over child elements
+      if (e.target === column) {
+        column.style.backgroundColor = '';
+      }
+    });
+
+    column.addEventListener('drop', (e) => {
+      e.preventDefault();
+      column.style.backgroundColor = '';
+      
+      if (draggedElement && draggedElement.parentElement !== column) {
+        column.appendChild(draggedElement);
+        updateStats();
+      }
+    });
+  });
+}
+
+function updateStats() {
+  const todo     = document.querySelectorAll('#col-todo .card:not(.opacity-70)').length;
+  const progress = document.querySelectorAll('#col-progress .card').length;
+  const review   = document.querySelectorAll('#col-review .card').length;
+  const done     = document.querySelectorAll('#col-done .card').length;
+  const total    = todo + progress + review + done;
+  const pct      = total > 0 ? Math.round((done / total) * 100) : 0;
+
+  document.getElementById('stat-total').textContent    = total;
+  document.getElementById('stat-progress').textContent = progress + review;
+  document.getElementById('stat-done').textContent     = done;
+  document.getElementById('stat-pct').textContent      = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  document.querySelectorAll('.col-count').forEach(el => {
+    const col = el.dataset.col;
+    if (col === 'todo')     el.textContent = todo;
+    if (col === 'progress') el.textContent = progress;
+    if (col === 'review')   el.textContent = review;
+    if (col === 'done')     el.textContent = done;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateStats();
+  setupDragAndDrop();
+  
+  // Close modal on overlay click
+  document.getElementById('createCardModal').addEventListener('click', (e) => {
+    if (e.target.id === 'createCardModal') closeCreateCardModal();
+  });
+
+  // Allow Enter key to add subtask
+  document.getElementById('subtaskInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addSubtaskField();
+    }
+  });
+});
+</script>
+</body>
+</html>
