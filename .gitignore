@@ -1,0 +1,17 @@
+# Ficheiros a ignorar
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+.env.local
+
+# Temp
+*.tmp
+*.log
