@@ -173,7 +173,7 @@
                 <span class="tag-be chip text-xs rounded">BE</span>
               </div>
               <div class="font-semibold text-sm text-slate-100 leading-snug">Modelos de dados core (Django ORM)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Definir e migrar os modelos Discipline, Topic, Resource, Game e Book. Base de toda a lógica de conteúdo.</p>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Criar a estrutura de dados em Django que vai guardar tudo no banco: Disciplinas (Português, Matemática...), Tópicos por ano escolar, Recursos (vídeos, PDFs, exercícios), Jogos educativos e Livros. IMPORTANTE: Isto desbloqueia TUDO o resto do projeto — sem isto, não conseguimos construir a API nem o frontend.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
@@ -215,7 +215,7 @@
                 <span class="tag-be chip text-xs rounded">BE</span>
               </div>
               <div class="font-semibold text-sm text-slate-100 leading-snug">API REST com DRF + OpenAPI (Swagger)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Serializers, ViewSets, routers em /api/v1/. Documentação automática via drf-spectacular em /api/docs/.</p>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Criar os endpoints que o frontend consegue usar para buscar dados. Ex: GET /api/v1/disciplines/ retorna todas as disciplinas em JSON. Tem de funcionar com filtros (?discipline=português) e paginação. O Swagger (/api/docs/) é a documentação interativa que mostra todos os endpoints.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
@@ -253,7 +253,7 @@
                 <span class="tag-be chip text-xs rounded">BE</span>
               </div>
               <div class="font-semibold text-sm text-slate-100 leading-snug">Django Admin customizado (CMS para o cliente)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Backoffice intuitivo para a equipa da Fundação gerir conteúdos sem formação técnica. Requisito crítico.</p>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Personalizar a área de admin padrão do Django para que a equipa da Fundação consiga adicionar/editar conteúdos sem saber programar. Tem de ter UI bonita (jazzmin ou unfold), filtros inteligentes, e validações. Requisito CRÍTICO — o cliente precisa disto para manter o site atualizado.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
@@ -286,7 +286,7 @@
                 <span class="tag-fe chip text-xs rounded">FE</span>
               </div>
               <div class="font-semibold text-sm text-slate-100 leading-snug">Tailwind config + Router + Cliente Axios</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Paleta de cores Integra-te em Tailwind, React Router v6 com todas as rotas, cliente Axios com env var.</p>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Setup inicial do React: configurar as cores do Integra-te em Tailwind (azul, amarelo, rosa...), router para todas as páginas (homepage, aprender, jogos, livros), e cliente Axios que se conecta à API do backend. Depois disto, o frontend consegue carregar dados da API e renderizar.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
@@ -324,7 +324,7 @@
                 <span class="tag-fe chip text-xs rounded">FE</span>
               </div>
               <div class="font-semibold text-sm text-slate-100 leading-snug">Componentes base + identidade visual</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Header sticky, Footer com logótipos Portugal 2030 (obrigatórios), componentes reutilizáveis.</p>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Criar os componentes React que todas as páginas vão usar: Header com navegação sticky (fica no topo quando scrollas), Footer com logótipos EU/Portugal 2030 (OBRIGATÓRIO por lei de co-financiamento), Button, Card, e outros componentes reutilizáveis. Garante que tudo tem a mesma identidade visual.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
@@ -357,7 +357,7 @@
                 <span class="tag-full chip text-xs rounded">FULL</span>
               </div>
               <div class="font-semibold text-sm text-slate-100 leading-snug">Homepage completa (ligada à API)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Hero section com acesso às 4 áreas, Sobre o Projeto, secção de apoio a famílias. Dados reais da API.</p>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">A página inicial que vê logo que entra. Tem: hero section bonito com 4 blocos para as áreas (Aprender, Resolver, Jogar, Ler), sobre o projeto (texto acessível para pais com baixa literacia), e secção de apoio a famílias. Os dados vêm da API — não são textos hardcoded.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
@@ -391,7 +391,7 @@
                 <span class="tag-fe chip text-xs rounded">FE</span>
               </div>
               <div class="font-semibold text-sm text-slate-100 leading-snug">Página "Sobre" + Página "Contactos"</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Páginas estáticas com componentes, formulário de contacto e endpoint simples de POST.</p>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">2 páginas importantes: /sobre tem info sobre o projeto, equipa, impacto (conteúdo editável). /contactos tem um formulário onde pais/educadores enviam mensagens. Precisa de validação no frontend + endpoint simples no backend que guarda em base de dados.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
@@ -428,7 +428,7 @@
                 <span class="tag-be chip text-xs rounded">BE</span>
               </div>
               <div class="font-semibold text-sm text-slate-100 leading-snug">Testes de integração para API REST</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Testes de endpoints GET, POST de todas as rotas principais. Validação de permissões e erros HTTP.</p>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Escrever testes unitários em Django para garantir que todos os endpoints funcionam. Testes: GET retorna dados corretos, POST cria recursos, filtros funcionam, efeito headers de autenticação, códigos HTTP estão certos (200 OK, 401 Unauthorised, 404 Not Found, etc). Isto garante que o backend nunca rebenta sem avisar.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
@@ -462,7 +462,7 @@
                 <span class="tag-doc chip text-xs rounded">DOC</span>
               </div>
               <div class="font-semibold text-sm text-slate-100 leading-snug">Frontend: Página de Recursos "Aprender"</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Listar disciplinas, tópicos e recursos com filtros. Com dados reais da API.</p>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">A página principal do app. Mostra: 1) Grid com todas as disciplinas (Português, Matemática...). 2) Quando clicas numa, vê tópicos desse ano. 3) Cuando clicas num tópico, vê os recursos (vídeos, PDFs, exercícios). Tudo vem da API e tem filtros para ano escolar.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
@@ -496,7 +496,7 @@
                 <span class="tag-fe chip text-xs rounded">FE</span>
               </div>
               <div class="font-semibold text-sm text-slate-100 leading-snug">Página de Jogos com grid interativo</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Grid responsivo de jogos, filtros por idade e área de interesse. Integração com API.</p>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Página /jogar com grid de cards de jogos educativos. Tem filtros: por idade (4+, 6+, 9+) e área (português, matemática...). Clica num jogo → abre modal com detalhes + botão "Jogar" (leva para URL ou download). Dados vêm da API.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
@@ -530,7 +530,7 @@
                 <span class="tag-be chip text-xs rounded">BE</span>
               </div>
               <div class="font-semibold text-sm text-slate-100 leading-snug">Sistema de permissões e autenticação</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Preparar estrutura para authentication (JWT ou sessions). Groups de permissões para admin.</p>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Setup de segurança no backend. Criar Groups (Admin, Editor, Viewer) com permissões diferentes. Admin consegue tudo, Editor consegue adicionar conteúdo, Viewer apenas lê. Implementar JWT ou Token authentication para que o frontend possa fazer login e aceder endpoints protegidos.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
@@ -564,7 +564,7 @@
                 <span class="tag-test chip text-xs rounded">TEST</span>
               </div>
               <div class="font-semibold text-sm text-slate-100 leading-snug">Cobertura de testes backend (mínimo 80%)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Testes unitários para helpers, validators. Testes de models com factory boy.</p>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Garantir que todo o código tem testes automatizados. Usar Factory Boy para criar dados de teste rapidamente. Coverage.py mede quantas linhas de código têm testes (objetivo: mínimo 80%). CI/CD valida isto em cada PR — se tiver menos, o merge é rejeitado.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
@@ -597,7 +597,7 @@
                 <span class="tag-fe chip text-xs rounded">FE</span>
               </div>
               <div class="font-semibold text-sm text-slate-100 leading-snug">Página de Livros com modal e detalhes</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Grid de livros com busca, filtros por tema. Links externos para compra/biblioteca.</p>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Página /ler mostra grid de livros recomendados. Tem: input de busca por autor/título, filtros por tema. Clica num livro → modal com sinopse completa, temas, e links para comprar (Amazon, Wook) ou ir à biblioteca. Dados guardados na API.</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
@@ -630,7 +630,7 @@
                 <span class="tag-full chip text-xs rounded">FULL</span>
               </div>
               <div class="font-semibold text-sm text-slate-100 leading-snug">Responsividade completa e testes E2E</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Mobile-first checks em todos os breakpoints. Testes Cypress em fluxos críticos.</p>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Garantir que o app funciona bem em mobile (320px), tablet (768px) e desktop (1920px). Sem overflow, sem elementos que saem do ecrã. Testes Cypress (automated browser) para fluxos críticos: homepage → clicar aprender → selecionar disciplina → ver recurso. Validar acessibilidade (cores, contraste, labels).</p>
             </div>
             <span class="chevron text-slate-500 text-xs mt-1">▾</span>
           </div>
