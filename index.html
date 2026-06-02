@@ -1,11 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Sprint 1 — Integra-te Kanban</title>
-<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
   :root {
@@ -16,7 +17,6 @@
   body { font-family: 'Space Grotesk', sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; }
   .mono { font-family: 'JetBrains Mono', monospace; }
 
-  /* scrollbar */
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: #1a1d27; }
   ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
@@ -29,7 +29,6 @@
   .subtasks { display: none; }
   .chevron { transition: transform .2s ease; display: inline-block; }
 
-  /* member chips */
   .chip { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
   .chip-adrien  { background:#1e3a5f; color:#93c5fd; border:1px solid #2d5a8e; }
   .chip-diogo   { background:#064e3b; color:#6ee7b7; border:1px solid #065f46; }
@@ -37,7 +36,6 @@
   .chip-cristian{ background:#3b0764; color:#d8b4fe; border:1px solid #5b21b6; }
   .chip-all     { background:#1f2937; color:#9ca3af; border:1px solid #374151; }
 
-  /* type tags */
   .tag-fe    { background:#1e3a5f22; color:#60a5fa; border:1px solid #1e3a5f; }
   .tag-be    { background:#06412022; color:#34d399; border:1px solid #065f46; }
   .tag-full  { background:#4c1d9522; color:#a78bfa; border:1px solid #4c1d95; }
@@ -45,18 +43,15 @@
   .tag-test  { background:#7c2d1222; color:#fb923c; border:1px solid #7c2d12; }
   .tag-doc   { background:#31143622; color:#e879f9; border:1px solid #4a044e; }
 
-  /* priority dot */
   .prio-high   { background: #ef4444; }
   .prio-medium { background: #f59e0b; }
   .prio-low    { background: #22c55e; }
 
-  /* col header accent lines */
   .col-todo     { border-top: 3px solid #6366f1; }
   .col-progress { border-top: 3px solid #f59e0b; }
   .col-review   { border-top: 3px solid #8b5cf6; }
   .col-done     { border-top: 3px solid #10b981; }
 
-  /* hero gradient */
   .hero-bg {
     background: linear-gradient(135deg, #0f1117 0%, #1a1d2e 50%, #0f1117 100%);
     border-bottom: 1px solid #1f2937;
@@ -73,7 +68,6 @@
   @keyframes fadeInUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
   .card { animation: fadeInUp .25s ease both; }
 
-  /* Modal styles */
   .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; z-index: 50; }
   .modal { background: #1a1d2e; border: 1px solid #1f2937; border-radius: 12px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; }
   .modal-header { border-bottom: 1px solid #1f2937; padding: 20px; }
@@ -116,10 +110,11 @@
       </div>
 
       <div class="flex flex-wrap gap-2 items-center">
-        <span class="chip chip-adrien">Adrien</span>
-        <span class="chip chip-diogo">Diogo</span>
-        <span class="chip chip-giulio">Giulio</span>
-        <span class="chip chip-cristian">Cristian</span>
+        <button onclick="toggleMemberFilter('Adrien')" id="filter-Adrien" class="chip chip-adrien opacity-60 hover:opacity-100 transition-all">Adrien</button>
+        <button onclick="toggleMemberFilter('Diogo')" id="filter-Diogo" class="chip chip-diogo opacity-60 hover:opacity-100 transition-all">Diogo</button>
+        <button onclick="toggleMemberFilter('Giulio')" id="filter-Giulio" class="chip chip-giulio opacity-60 hover:opacity-100 transition-all">Giulio</button>
+        <button onclick="toggleMemberFilter('Cristian')" id="filter-Cristian" class="chip chip-cristian opacity-60 hover:opacity-100 transition-all">Cristian</button>
+        <button onclick="clearMemberFilter()" id="filter-clear" class="chip chip-all hidden">Mostrar Todas</button>
       </div>
     </div>
 
@@ -145,7 +140,7 @@
   </div>
 </div>
 
-<div class="overflow-x-auto px-6 py-6">
+<div class="overflow-x-auto px-6 pt-6 pb-6">
 <div class="flex gap-4 max-w-screen-2xl mx-auto" style="min-width: max-content;">
 
   <div class="board-col">
@@ -154,7 +149,7 @@
         <span class="font-semibold text-slate-200 text-sm">📋 Backlog / To Do</span>
         <div class="flex items-center gap-2">
           <span class="mono text-xs bg-indigo-900/50 text-indigo-300 px-2 py-0.5 rounded-full col-count" data-col="col-todo">0</span>
-          <button onclick="openCreateCardModal('col-todo')" class="text-indigo-400 hover:text-indigo-300 text-lg font-bold" title="Adicionar task">+</button>
+          <button onclick="openCreateCardModal('col-todo')" class="text-indigo-400 hover:text-indigo-300 text-lg font-bold">+</button>
         </div>
       </div>
       <div class="space-y-2 min-h-[500px]" id="col-todo"></div>
@@ -167,7 +162,7 @@
         <span class="font-semibold text-slate-200 text-sm">⚡ In Progress</span>
         <div class="flex items-center gap-2">
           <span class="mono text-xs bg-amber-900/50 text-amber-300 px-2 py-0.5 rounded-full col-count" data-col="col-progress">0</span>
-          <button onclick="openCreateCardModal('col-progress')" class="text-amber-400 hover:text-amber-300 text-lg font-bold" title="Adicionar task">+</button>
+          <button onclick="openCreateCardModal('col-progress')" class="text-amber-400 hover:text-amber-300 text-lg font-bold">+</button>
         </div>
       </div>
       <div class="space-y-2 min-h-[500px]" id="col-progress"></div>
@@ -180,7 +175,7 @@
         <span class="font-semibold text-slate-200 text-sm">🔍 In Review / Testing</span>
         <div class="flex items-center gap-2">
           <span class="mono text-xs bg-purple-900/50 text-purple-300 px-2 py-0.5 rounded-full col-count" data-col="col-review">0</span>
-          <button onclick="openCreateCardModal('col-review')" class="text-purple-400 hover:text-purple-300 text-lg font-bold" title="Adicionar task">+</button>
+          <button onclick="openCreateCardModal('col-review')" class="text-purple-400 hover:text-purple-300 text-lg font-bold">+</button>
         </div>
       </div>
       <div class="space-y-2 min-h-[500px]" id="col-review"></div>
@@ -193,7 +188,7 @@
         <span class="font-semibold text-slate-200 text-sm">✅ Done</span>
         <div class="flex items-center gap-2">
           <span class="mono text-xs bg-emerald-900/50 text-emerald-300 px-2 py-0.5 rounded-full col-count" data-col="col-done">0</span>
-          <button onclick="openCreateCardModal('col-done')" class="text-emerald-400 hover:text-emerald-300 text-lg font-bold" title="Adicionar task">+</button>
+          <button onclick="openCreateCardModal('col-done')" class="text-emerald-400 hover:text-emerald-300 text-lg font-bold">+</button>
         </div>
       </div>
       <div class="space-y-2 min-h-[500px]" id="col-done"></div>
@@ -202,6 +197,118 @@
 
 </div>
 </div>
+
+<div class="max-w-screen-2xl mx-auto px-6 pb-12"> 
+   <div class="border-t border-[#1f2937] pt-8"> 
+     <h2 class="text-xl font-bold text-white mb-1">📋 Como acompanhar este Sprint no dia a dia</h2> 
+     <p class="text-slate-400 text-sm mb-6">Guia de operações para garantir o sucesso do Sprint 1 — Projeto Integra-te</p> 
+
+     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"> 
+
+       <div class="bg-[#1a1d2e] border border-[#1f2937] rounded-xl p-4"> 
+         <div class="flex items-center gap-2 mb-3"> 
+           <span class="w-7 h-7 rounded-lg bg-indigo-900/60 border border-indigo-800 flex items-center justify-center text-indigo-300 font-bold text-xs">1</span> 
+           <span class="font-semibold text-slate-200 text-sm">Sprint Kickoff (Dia 1)</span> 
+         </div> 
+         <ul class="space-y-2 text-xs text-slate-400"> 
+           <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Reunião de 30min: rever este board em conjunto e confirmar quem pega em quê.</li> 
+           <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Adrien: arrancar CI-01 (GitHub Actions) — desbloqueia PRs para todos.</li> 
+           <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Adrien + Diogo: começar BE-01 (modelos) — o frontend depende da API.</li> 
+           <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Giulio: começar FE-01 (Tailwind config + Router) — pode avançar em paralelo.</li> 
+           <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Cristian: ler o código base e fazer setup local. Só começa CRS-01 depois de FE-02 estar pronto.</li> 
+         </ul> 
+       </div> 
+
+       <div class="bg-[#1a1d2e] border border-[#1f2937] rounded-xl p-4"> 
+         <div class="flex items-center gap-2 mb-3"> 
+           <span class="w-7 h-7 rounded-lg bg-yellow-900/60 border border-yellow-800 flex items-center justify-center text-yellow-300 font-bold text-xs">2</span> 
+           <span class="font-semibold text-slate-200 text-sm">Daily Standup (cada sessão)</span> 
+         </div> 
+         <ul class="space-y-2 text-xs text-slate-400"> 
+           <li class="flex gap-2"><span class="text-yellow-400 flex-shrink-0">→</span>Máximo 10 minutos. 3 perguntas por pessoa:</li> 
+           <li class="flex gap-2 pl-4"><span class="text-slate-600">·</span><span><strong class="text-slate-300">O que fiz</strong> desde a última sessão?</span></li> 
+           <li class="flex gap-2 pl-4"><span class="text-slate-600">·</span><span><strong class="text-slate-300">O que vou fazer</strong> hoje?</span></li> 
+           <li class="flex gap-2 pl-4"><span class="text-slate-600">·</span><span><strong class="text-slate-300">Estou bloqueado</strong> em alguma coisa?</span></li> 
+           <li class="flex gap-2"><span class="text-yellow-400 flex-shrink-0">→</span>Atualizar o board (mover cards) logo no início da standup.</li> 
+           <li class="flex gap-2"><span class="text-yellow-400 flex-shrink-0">→</span>Bloqueios resolvidos fora da standup, não durante.</li> 
+         </ul> 
+       </div> 
+
+       <div class="bg-[#1a1d2e] border border-[#1f2937] rounded-xl p-4"> 
+         <div class="flex items-center gap-2 mb-3"> 
+           <span class="w-7 h-7 rounded-lg bg-green-900/60 border border-green-800 flex items-center justify-center text-green-300 font-bold text-xs">3</span> 
+           <span class="font-semibold text-slate-200 text-sm">Git Workflow obrigatório</span> 
+         </div> 
+         <ul class="space-y-2 text-xs text-slate-400"> 
+           <li class="flex gap-2"><span class="text-green-400 flex-shrink-0">→</span>Branch por task: <span class="mono text-green-300 bg-green-950 px-1 rounded">feat/BE-01-django-models</span></li> 
+           <li class="flex gap-2"><span class="text-green-400 flex-shrink-0">→</span>Commits com prefixo: <span class="mono text-green-300 bg-green-950 px-1 rounded">feat:</span> <span class="mono text-green-300 bg-green-950 px-1 rounded">fix:</span> <span class="mono text-green-300 bg-green-950 px-1 rounded">test:</span></li> 
+           <li class="flex gap-2"><span class="text-green-400 flex-shrink-0">→</span>PR aberto → task vai para <strong class="text-slate-300">In Review</strong>.</li> 
+           <li class="flex gap-2"><span class="text-green-400 flex-shrink-0">→</span>Code review de pelo menos 1 pessoa (Adrien revê tudo do Cristian).</li> 
+           <li class="flex gap-2"><span class="text-green-400 flex-shrink-0">→</span>CI verde + aprovação → merge → task vai para <strong class="text-slate-300">Done</strong>.</li> 
+           <li class="flex gap-2"><span class="text-green-400 flex-shrink-0">→</span>Nunca fazer push direto para main.</li> 
+         </ul> 
+       </div> 
+
+       <div class="bg-[#1a1d2e] border border-red-900/40 rounded-xl p-4"> 
+         <div class="flex items-center gap-2 mb-3"> 
+           <span class="w-7 h-7 rounded-lg bg-red-900/60 border border-red-800 flex items-center justify-center text-red-300 font-bold text-xs">4</span> 
+           <span class="font-semibold text-slate-200 text-sm">Dependências críticas</span> 
+         </div> 
+         <ul class="space-y-2 text-xs text-slate-400"> 
+           <li class="flex gap-2"><span class="text-red-400 flex-shrink-0">⚠</span><span><strong class="text-slate-300">BE-01 desbloqueia BE-02</strong> — API só pode ser construída depois dos modelos.</span></li> 
+           <li class="flex gap-2"><span class="text-red-400 flex-shrink-0">⚠</span><span><strong class="text-slate-300">FE-02 desbloqueia CRS-01</strong> — Cristian precisa dos componentes base.</span></li> 
+           <li class="flex gap-2"><span class="text-red-400 flex-shrink-0">⚠</span><span><strong class="text-slate-300">BE-02 desbloqueia FE-03</strong> — Homepage precisa de dados reais da API.</span></li> 
+           <li class="flex gap-2"><span class="text-red-400 flex-shrink-0">⚠</span><span><strong class="text-slate-300">CI-01 deve ser concluído primeiro</strong> — todos os PRs dependem do pipeline.</span></li> 
+           <li class="flex gap-2"><span class="text-red-400 flex-shrink-0">⚠</span><span>FE-01 e BE-01 podem correr <strong class="text-slate-300">em paralelo</strong> — nenhum bloqueia o outro.</span></li> 
+         </ul> 
+       </div> 
+
+       <div class="bg-[#1a1d2e] border border-[#1f2937] rounded-xl p-4"> 
+         <div class="flex items-center gap-2 mb-3"> 
+           <span class="w-7 h-7 rounded-lg bg-purple-900/60 border border-purple-800 flex items-center justify-center text-purple-300 font-bold text-xs">5</span> 
+           <span class="font-semibold text-slate-200 text-sm">Mid-Sprint Check (Semana 2)</span> 
+         </div> 
+         <ul class="space-y-2 text-xs text-slate-400"> 
+           <li class="flex gap-2"><span class="text-purple-400 flex-shrink-0">→</span>Reunião de 45min a meio do sprint para avaliar progresso.</li> 
+           <li class="flex gap-2"><span class="text-purple-400 flex-shrink-0">→</span>Meta mínima: BE-01, BE-02 e FE-01 em Done ou Review.</li> 
+           <li class="flex gap-2"><span class="text-purple-400 flex-shrink-0">→</span>Se BE-01 ainda não está concluído: Adrien + Diogo ajudam-se mutuamente — é o bloqueador maior.</li> 
+           <li class="flex gap-2"><span class="text-purple-400 flex-shrink-0">→</span>Rever carga de trabalho do Cristian — ajustar se necessário.</li> 
+           <li class="flex gap-2"><span class="text-purple-400 flex-shrink-0">→</span>Identificar o que pode escalar para o Sprint 2 se necessário.</li> 
+         </ul> 
+       </div> 
+
+       <div class="bg-[#1a1d2e] border border-[#1f2937] rounded-xl p-4"> 
+         <div class="flex items-center gap-2 mb-3"> 
+           <span class="w-7 h-7 rounded-lg bg-indigo-900/60 border border-indigo-800 flex items-center justify-center text-indigo-300 font-bold text-xs">6</span> 
+           <span class="font-semibold text-slate-200 text-sm">Sprint Review + Retrospetiva (Semana 3)</span> 
+         </div> 
+         <ul class="space-y-2 text-xs text-slate-400"> 
+           <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Demo ao formador: app a correr end-to-end em dev (<span class="mono text-indigo-300 bg-indigo-950 px-1 rounded">make start-dev</span>).</li> 
+           <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Mostrar: Admin Django funcional, API em /api/docs/, Homepage ligada à API.</li> 
+           <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Retrospetiva rápida (15min): O que correu bem? O que mudar? Uma ação concreta para o Sprint 2.</li> 
+           <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Atualizar o backlog do Sprint 2 com o que ficou por fazer.</li> 
+           <li class="flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>Git tag <span class="mono text-indigo-300 bg-indigo-950 px-1 rounded">sprint1-end</span> no último commit do sprint.</li> 
+         </ul> 
+       </div> 
+
+     </div> 
+
+     <div class="mt-4 bg-[#1a1d2e] border border-green-900/40 rounded-xl p-4"> 
+       <h3 class="font-semibold text-green-400 text-sm mb-3">✅ Definition of Done — uma task só vai para "Done" quando:</h3> 
+       <div class="grid grid-cols-2 md:grid-cols-4 gap-3"> 
+         <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>Código em PR com branch própria</div> 
+         <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>CI pipeline verde (lint + testes)</div> 
+         <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>Code review aprovado (≥1 pessoa)</div> 
+         <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>Merged em main sem conflitos</div> 
+         <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>Funciona com <span class="mono text-slate-300">make start-dev</span></div> 
+         <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>Testes escritos (backend obrigatório)</div> 
+         <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>Sem TODO críticos não documentados</div> 
+         <div class="text-xs text-slate-400 flex gap-2"><span class="text-green-500">✓</span>Board updated na mesma sessão</div> 
+       </div> 
+     </div> 
+
+   </div> 
+ </div>
 
 <div id="createCardModal" class="modal-overlay hidden">
   <div class="modal">
@@ -260,9 +367,9 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">Subtarefas (Formatado como Texto)</label>
+        <label class="form-label">Subtarefas (Texto)</label>
         <div class="subtask-input">
-          <input type="text" id="subtaskInput" class="form-input" placeholder="Ex: Subtask | Responsável · Detalhe">
+          <input type="text" id="subtaskInput" class="form-input" placeholder="Ex: Subtask | Responsável">
           <button type="button" onclick="addSubtaskField()" class="btn btn-secondary btn-sm">+</button>
         </div>
         <div id="subtasksList" class="space-y-1.5 mt-2"></div>
@@ -291,6 +398,15 @@
         <label class="form-label">Descrição</label>
         <textarea id="editTaskDesc" class="form-textarea"></textarea>
       </div>
+      <div class="form-group">
+        <label class="form-label">Membros Atribuídos</label>
+        <div class="grid grid-cols-2 gap-2 bg-[#0f1117] p-3 rounded-lg border border-[#1f2937]">
+          <label class="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" name="editTaskMembers" value="Adrien" id="edit-m-Adrien"> Adrien</label>
+          <label class="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" name="editTaskMembers" value="Diogo" id="edit-m-Diogo"> Diogo</label>
+          <label class="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" name="editTaskMembers" value="Giulio" id="edit-m-Giulio"> Giulio</label>
+          <label class="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" name="editTaskMembers" value="Cristian" id="edit-m-Cristian"> Cristian</label>
+        </div>
+      </div>
     </div>
     <div class="modal-footer flex justify-between">
       <button onclick="deleteCardFromModal()" class="btn bg-red-600 text-white hover:bg-red-700">Eliminar Task</button>
@@ -303,31 +419,28 @@
 </div>
 
 <script>
-// ============ CONFIGURAÇÃO DO SUPABASE ============
 const SUPABASE_URL = "https://znjckxrjnznnizgqbfzx.supabase.co"; 
 const SUPABASE_ANON_KEY = "sb_publishable_Dlam_8o49JAOQExpSNex9w_BKB8srVM";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+let globalTasks = [];
+let activeMemberFilter = null;
 let currentSubtasks = [];
 
-// ============ INICIALIZAÇÃO E REALTIME ============
 document.addEventListener('DOMContentLoaded', () => {
-  fetchTasks(); // Carrega os dados iniciais vindos da cloud
+  fetchTasks();
   setupDragAndDrop();
   setupModalListeners();
 
-  // Escutar eventos da base de dados em Tempo Real (Realtime)
   supabaseClient
     .channel('public:tasks')
-    .on('postgres_changes', { event: '*', filter: 'id=neq.0', schema: 'public', table: 'tasks' }, (payload) => {
-      console.log('Mudança detetada em tempo real:', payload);
-      fetchTasks(); // Atualiza a renderização do quadro automaticamente
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
+      fetchTasks();
     })
     .subscribe();
 });
 
-// Buscar tarefas do Supabase
 async function fetchTasks() {
   try {
     const { data: tasks, error } = await supabaseClient
@@ -337,25 +450,29 @@ async function fetchTasks() {
 
     if (error) throw error;
 
-    // Limpar as colunas antes de renderizar
-    document.getElementById('col-todo').innerHTML = '';
-    document.getElementById('col-progress').innerHTML = '';
-    document.getElementById('col-review').innerHTML = '';
-    document.getElementById('col-done').innerHTML = '';
-
-    if (tasks && tasks.length > 0) {
-      tasks.forEach(task => {
-        renderTaskCard(task);
-      });
-    }
-    
-    updateStats();
+    globalTasks = tasks || [];
+    renderBoard();
   } catch (err) {
     console.error('Erro ao buscar tarefas:', err.message);
   }
 }
 
-// Renderizar o HTML dinâmico de um card
+function renderBoard() {
+  document.getElementById('col-todo').innerHTML = '';
+  document.getElementById('col-progress').innerHTML = '';
+  document.getElementById('col-review').innerHTML = '';
+  document.getElementById('col-done').innerHTML = '';
+
+  globalTasks.forEach(task => {
+    if (activeMemberFilter && (!task.members || !task.members.includes(activeMemberFilter))) {
+      return; 
+    }
+    renderTaskCard(task);
+  });
+
+  updateStats();
+}
+
 function renderTaskCard(task) {
   const col = document.getElementById(task.columnId);
   if (!col) return;
@@ -365,14 +482,12 @@ function renderTaskCard(task) {
   card.setAttribute('draggable', 'true');
   card.setAttribute('data-id', task.id);
   
-  // Evento de clique para expandir subtarefas
   card.addEventListener('click', (e) => {
     if (!e.target.closest('.edit-btn-trigger')) {
       card.classList.toggle('open');
     }
   });
 
-  // Listener para Drag Start
   card.addEventListener('dragstart', (e) => {
     e.dataTransfer.setData('text/plain', task.id);
     card.classList.add('opacity-40');
@@ -382,16 +497,13 @@ function renderTaskCard(task) {
     card.classList.remove('opacity-40');
   });
 
-  // Renderizar chips de membros
   let membersHtml = '';
   if (task.members && task.members.length > 0) {
     task.members.forEach(m => {
-      const slug = m.toLowerCase();
-      membersHtml += `<span class="chip chip-${slug} mr-1 mt-1">${m}</span>`;
+      membersHtml += `<span class="chip chip-${m.toLowerCase()} mr-1 mt-1">${m}</span>`;
     });
   }
 
-  // Renderizar linhas de subtarefas
   let subtasksHtml = '';
   if (task.subtasks && task.subtasks.length > 0) {
     task.subtasks.forEach(sub => {
@@ -408,7 +520,7 @@ function renderTaskCard(task) {
   }
 
   card.innerHTML = `
-    <button onclick="openEditCardModal(event, ${task.id}, '${task.title.replace(/'/g, "\\'")}', '${(task.desc || '').replace(/'/g, "\\'")}')" class="edit-btn-trigger absolute top-2 right-8 text-xs text-indigo-400 hover:text-indigo-300 px-1 bg-[#10121d] rounded border border-indigo-900/40">Editar</button>
+    <button onclick="triggerEditModal(event, ${task.id})" class="edit-btn-trigger absolute top-2 right-8 text-xs text-indigo-400 hover:text-indigo-300 px-1 bg-[#10121d] rounded border border-indigo-900/40">Editar</button>
     <div class="flex items-start justify-between gap-2">
       <div class="flex-1">
         <div class="flex items-center gap-2 mb-2">
@@ -432,35 +544,86 @@ function renderTaskCard(task) {
   col.appendChild(card);
 }
 
-// ============ DRAG AND DROP ============
+// FIX DA SINTAXE DO BOTÃO EDITAR: Busca direta e segura na memória local organizada por ID
+function triggerEditModal(e, id) {
+  e.stopPropagation();
+  const task = globalTasks.find(t => t.id === id);
+  if (!task) return;
+
+  document.getElementById('editTaskId').value = task.id;
+  document.getElementById('editTaskTitle').value = task.title;
+  document.getElementById('editTaskDesc').value = task.desc || '';
+
+  const members = ['Adrien', 'Diogo', 'Giulio', 'Cristian'];
+  const assignedMembers = task.members || [];
+  members.forEach(m => {
+    const cb = document.getElementById(`edit-m-${m}`);
+    cb.checked = assignedMembers.includes(m);
+  });
+
+  document.getElementById('editCardModal').classList.remove('hidden');
+}
+
+function toggleMemberFilter(memberName) {
+  const members = ['Adrien', 'Diogo', 'Giulio', 'Cristian'];
+  
+  if (activeMemberFilter === memberName) {
+    clearMemberFilter();
+    return;
+  }
+
+  activeMemberFilter = memberName;
+  
+  members.forEach(m => {
+    const btn = document.getElementById(`filter-${m}`);
+    if (m === memberName) {
+      btn.style.opacity = '1';
+      btn.style.transform = 'scale(1.05)';
+    } else {
+      btn.style.opacity = '0.3';
+      btn.style.transform = 'scale(1)';
+    }
+  });
+  
+  document.getElementById('filter-clear').classList.remove('hidden');
+  renderBoard();
+}
+
+function clearMemberFilter() {
+  activeMemberFilter = null;
+  const members = ['Adrien', 'Diogo', 'Giulio', 'Cristian'];
+  
+  members.forEach(m => {
+    const btn = document.getElementById(`filter-${m}`);
+    btn.style.opacity = '0.6';
+    btn.style.transform = 'scale(1)';
+  });
+  
+  document.getElementById('filter-clear').classList.add('hidden');
+  renderBoard();
+}
+
 function setupDragAndDrop() {
   const columns = ['col-todo', 'col-progress', 'col-review', 'col-done'];
-  
   columns.forEach(colId => {
     const col = document.getElementById(colId);
-    
-    col.addEventListener('dragover', (e) => {
-      e.preventDefault();
-    });
-
+    col.addEventListener('dragover', (e) => e.preventDefault());
     col.addEventListener('drop', async (e) => {
       e.preventDefault();
       const taskId = e.dataTransfer.getData('text/plain');
       if (!taskId) return;
 
-      // Mudar a coluna localmente para feedback instantâneo
       const cardEl = document.querySelector(`[data-id="${taskId}"]`);
       if (cardEl) col.appendChild(cardEl);
 
-      // Atualizar no Supabase
       const { error } = await supabaseClient
         .from('tasks')
         .update({ columnId: colId })
         .eq('id', taskId);
 
       if (error) {
-        console.error('Erro ao mover a tarefa:', error.message);
-        fetchTasks(); // Se der erro, desfaz e recarrega
+        console.error(error.message);
+        fetchTasks();
       } else {
         updateStats();
       }
@@ -468,7 +631,6 @@ function setupDragAndDrop() {
   });
 }
 
-// ============ REGRAS DOS MODAIS E SCRIPT CONTROLLER ============
 function openCreateCardModal(colId) {
   document.getElementById('modalColId').value = colId;
   document.getElementById('taskCode').value = 'TASK-' + Math.floor(100 + Math.random() * 900);
@@ -487,7 +649,6 @@ function addSubtaskField() {
   const input = document.getElementById('subtaskInput');
   const val = input.value.trim();
   if (!val) return;
-  
   currentSubtasks.push(val);
   input.value = '';
   renderCurrentSubtasks();
@@ -509,7 +670,6 @@ function renderCurrentSubtasks() {
   });
 }
 
-// Lógica de inserção no Banco de Dados
 async function createCardFromModal() {
   const columnId = document.getElementById('modalColId').value;
   const code = document.getElementById('taskCode').value.trim();
@@ -519,36 +679,20 @@ async function createCardFromModal() {
   const tagLabel = document.getElementById('taskTagLabel').value.trim();
   const prio = document.getElementById('taskPrio').value;
 
-  if (!title) {
-    alert('O título é obrigatório.');
-    return;
-  }
+  if (!title) return;
 
   const checkedBoxes = document.querySelectorAll('input[name="taskMembers"]:checked');
   const members = Array.from(checkedBoxes).map(cb => cb.value);
 
   const { error } = await supabaseClient
     .from('tasks')
-    .insert([{
-      code, title, desc, tag, tagLabel, prio, columnId, members, subtasks: currentSubtasks
-    }]);
+    .insert([{ code, title, desc, tag, tagLabel, prio, columnId, members, subtasks: currentSubtasks }]);
 
-  if (error) {
-    alert('Erro ao guardar: ' + error.message);
-  } else {
+  if (error) alert(error.message);
+  else {
     closeCreateCardModal();
-    // Limpar os checkboxes para a próxima
     document.querySelectorAll('input[name="taskMembers"]:checked').forEach(cb => cb.checked = false);
   }
-}
-
-// Modais de edição
-function openEditCardModal(e, id, title, desc) {
-  e.stopPropagation(); // Não expandir o card ao clicar em editar
-  document.getElementById('editTaskId').value = id;
-  document.getElementById('editTaskTitle').value = title;
-  document.getElementById('editTaskDesc').value = desc;
-  document.getElementById('editCardModal').classList.remove('hidden');
 }
 
 function closeEditCardModal() {
@@ -562,35 +706,30 @@ async function saveCardEdit() {
 
   if (!title) return;
 
+  const checkedBoxes = document.querySelectorAll('input[name="editTaskMembers"]:checked');
+  const members = Array.from(checkedBoxes).map(cb => cb.value);
+
   const { error } = await supabaseClient
     .from('tasks')
-    .update({ title, desc })
+    .update({ title, desc, members })
     .eq('id', id);
 
-  if (error) {
-    alert('Erro ao atualizar: ' + error.message);
-  } else {
-    closeEditCardModal();
-  }
+  if (error) alert(error.message);
+  else closeEditCardModal();
 }
 
 async function deleteCardFromModal() {
-  if (!confirm('Tens a certeza que desejas eliminar permanentemente esta tarefa?')) return;
+  if (!confirm('Tens a certeza?')) return;
   const id = document.getElementById('editTaskId').value;
-
   const { error } = await supabaseClient
     .from('tasks')
     .delete()
     .eq('id', id);
 
-  if (error) {
-    alert('Erro ao eliminar: ' + error.message);
-  } else {
-    closeEditCardModal();
-  }
+  if (error) alert(error.message);
+  else closeEditCardModal();
 }
 
-// Atualização de Estatísticas Dinâmicas
 function updateStats() {
   const todoCount = document.getElementById('col-todo').children.length;
   const progressCount = document.getElementById('col-progress').children.length;
@@ -599,18 +738,15 @@ function updateStats() {
 
   const total = todoCount + progressCount + reviewCount + doneCount;
   
-  // Atualizar contadores das colunas
   document.querySelector('[data-col="col-todo"]').innerText = todoCount;
   document.querySelector('[data-col="col-progress"]').innerText = progressCount;
   document.querySelector('[data-col="col-review"]').innerText = reviewCount;
   document.querySelector('[data-col="col-done"]').innerText = doneCount;
 
-  // Atualizar cartões de estatísticas principais
   document.getElementById('stat-total').innerText = total;
   document.getElementById('stat-progress').innerText = progressCount;
   document.getElementById('stat-done').innerText = doneCount;
 
-  // Barra de progresso percentual
   const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
   document.getElementById('stat-pct').innerText = pct + '%';
   document.getElementById('progress-fill').style.width = pct + '%';
@@ -629,16 +765,12 @@ function setupModalListeners() {
       addSubtaskField();
     }
   });
-  
-  // Sincronizar o evento do seletor de Tags com o campo Label automático
   document.getElementById('taskTag').addEventListener('change', (e) => {
-    const labels = {
-      'tag-be': 'BE', 'tag-fe': 'FE', 'tag-full': 'FULL',
-      'tag-infra': 'INFRA', 'tag-test': 'TEST', 'tag-doc': 'DOC'
-    };
+    const labels = { 'tag-be': 'BE', 'tag-fe': 'FE', 'tag-full': 'FULL', 'tag-infra': 'INFRA', 'tag-test': 'TEST', 'tag-doc': 'DOC' };
     document.getElementById('taskTagLabel').value = labels[e.target.value] || 'BE';
   });
 }
 </script>
 </body>
 </html>
+
