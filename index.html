@@ -568,19 +568,40 @@ async function toggleSubtaskSave(e, taskId, subtaskIndex) {
   const task = globalTasks.find(t => t.id === taskId);
   if (!task || !task.subtasks) return;
 
-  const currentSub = task.subtasks[subtaskIndex];
-  
-  if (typeof currentSub === 'object' && currentSub !== null) {
-    currentSub.completed = e.target.checked;
-  } else if (typeof currentSub === 'string') {
-    const parts = currentSub.split('|');
-    task.subtasks[subtaskIndex] = {
-      title: parts[0] || '',
-      meta: parts[1] || '',
-      completed: e.target.checked
-    };
+  let currentSub = task.subtasks[subtaskIndex];
+
+  // 1. Se por acaso a subtask veio da BD como uma String (por causa do bug das barras), tenta limpá-la
+  if (typeof currentSub === 'string') {
+    try {
+      // Tenta fazer o parse para ver se é um JSON disfarçado de string
+      let parsed = JSON.parse(currentSub);
+      // Se continuar a ser string após o primeiro parse, fazemos de novo até virar objeto
+      while (typeof parsed === 'string') {
+        parsed = JSON.parse(parsed);
+      }
+      currentSub = parsed;
+    } catch (err) {
+      // Se falhar o parse, é porque era mesmo uma string antiga formato "Texto | Nome"
+      const parts = currentSub.split('|');
+      currentSub = {
+        title: parts[0] || '',
+        meta: parts[1] || '',
+        completed: e.target.checked
+      };
+    }
   }
 
+  // 2. Agora que garantimos que é um objeto limpo, atualizamos o estado do check
+  currentSub.completed = e.target.checked;
+  
+  // Forçamos a atualização no array local também
+  task.subtasks[subtaskIndex] = {
+    title: currentSub.title ? currentSub.title.trim() : '',
+    meta: currentSub.meta ? currentSub.meta.trim() : '',
+    completed: currentSub.completed
+  };
+
+  // 3. Grava na Base de Dados (passando o array de objetos nativos do JS)
   const { error } = await supabaseClient
     .from('tasks')
     .update({ subtasks: task.subtasks })
