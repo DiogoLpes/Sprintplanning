@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -57,8 +56,9 @@
     border-bottom: 1px solid #1f2937;
   }
 
-  .subtask-row { border-left: 2px solid #374151; }
-  .subtask-row:hover { border-left-color: #6366f1; }
+  .subtask-row { border-left: 2px solid #374151; transition: all 0.2s ease; }
+  .subtask-row:hover { border-left-color: #6366f1; background: rgba(255,255,255,0.02); }
+  .subtask-row.completed { border-left-color: #10b981; opacity: 0.5; }
 
   .progress-bar { height: 4px; background: #1f2937; border-radius: 2px; overflow: hidden; }
   .progress-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, #6366f1, #8b5cf6); transition: width .3s; }
@@ -483,7 +483,7 @@ function renderTaskCard(task) {
   card.setAttribute('data-id', task.id);
   
   card.addEventListener('click', (e) => {
-    if (!e.target.closest('.edit-btn-trigger')) {
+    if (!e.target.closest('.edit-btn-trigger') && !e.target.closest('.subtask-checkbox-click')) {
       card.classList.toggle('open');
     }
   });
@@ -506,14 +506,31 @@ function renderTaskCard(task) {
 
   let subtasksHtml = '';
   if (task.subtasks && task.subtasks.length > 0) {
-    task.subtasks.forEach(sub => {
-      const parts = sub.split('|');
-      const title = parts[0] || '';
-      const meta = parts[1] || '';
+    task.subtasks.forEach((sub, index) => {
+      let isCompleted = false;
+      let title = '';
+      let meta = '';
+
+      if (typeof sub === 'object' && sub !== null) {
+        title = sub.title || '';
+        meta = sub.meta || '';
+        isCompleted = !!sub.completed;
+      } else if (typeof sub === 'string') {
+        const parts = sub.split('|');
+        title = parts[0] || '';
+        meta = parts[1] || '';
+      }
+
       subtasksHtml += `
-        <div class="subtask-row pl-3 py-1 rounded-r">
-          <div class="text-xs font-medium text-slate-300">${title.trim()}</div>
-          ${meta ? `<div class="text-xs text-slate-500 mt-0.5">${meta.trim()}</div>` : ''}
+        <div class="subtask-row flex items-start gap-2.5 pl-3 py-1.5 rounded-r ${isCompleted ? 'completed' : ''}">
+          <input type="checkbox" 
+                 ${isCompleted ? 'checked' : ''} 
+                 onclick="toggleSubtaskSave(event, ${task.id}, ${index})" 
+                 class="subtask-checkbox-click mt-0.5 w-3.5 h-3.5 rounded border-slate-600 bg-slate-900 text-indigo-600 focus:ring-0 focus:ring-offset-0 cursor-pointer">
+          <div class="flex-1 min-w-0">
+            <div class="text-xs font-medium text-slate-300 ${isCompleted ? 'line-through text-slate-500' : ''}">${title.trim()}</div>
+            ${meta ? `<div class="text-[11px] text-slate-500 mt-0.5">${meta.trim()}</div>` : ''}
+          </div>
         </div>
       `;
     });
@@ -536,7 +553,7 @@ function renderTaskCard(task) {
     <div class="flex flex-wrap gap-1 mt-2">
       ${membersHtml}
     </div>
-    <div class="subtasks mt-3 space-y-2">
+    <div class="subtasks mt-3 space-y-1.5 border-t border-slate-800/60 pt-2.5">
       ${subtasksHtml}
     </div>
   `;
@@ -544,7 +561,39 @@ function renderTaskCard(task) {
   col.appendChild(card);
 }
 
-// FIX DA SINTAXE DO BOTÃO EDITAR: Busca direta e segura na memória local organizada por ID
+// PERSISTÊNCIA DOS CHECKS DAS SUBTAREFAS EM BD
+async function toggleSubtaskSave(e, taskId, subtaskIndex) {
+  e.stopPropagation();
+  
+  const task = globalTasks.find(t => t.id === taskId);
+  if (!task || !task.subtasks) return;
+
+  const currentSub = task.subtasks[subtaskIndex];
+  
+  if (typeof currentSub === 'object' && currentSub !== null) {
+    currentSub.completed = e.target.checked;
+  } else if (typeof currentSub === 'string') {
+    const parts = currentSub.split('|');
+    task.subtasks[subtaskIndex] = {
+      title: parts[0] || '',
+      meta: parts[1] || '',
+      completed: e.target.checked
+    };
+  }
+
+  const { error } = await supabaseClient
+    .from('tasks')
+    .update({ subtasks: task.subtasks })
+    .eq('id', taskId);
+
+  if (error) {
+    alert("Erro ao salvar check: " + error.message);
+    fetchTasks(); 
+  } else {
+    updateStats();
+  }
+}
+
 function triggerEditModal(e, id) {
   e.stopPropagation();
   const task = globalTasks.find(t => t.id === id);
@@ -649,7 +698,14 @@ function addSubtaskField() {
   const input = document.getElementById('subtaskInput');
   const val = input.value.trim();
   if (!val) return;
-  currentSubtasks.push(val);
+  
+  const parts = val.split('|');
+  currentSubtasks.push({
+    title: parts[0] || '',
+    meta: parts[1] || '',
+    completed: false
+  });
+  
   input.value = '';
   renderCurrentSubtasks();
 }
@@ -665,7 +721,8 @@ function renderCurrentSubtasks() {
   currentSubtasks.forEach((sub, idx) => {
     const div = document.createElement('div');
     div.className = "subtask-item";
-    div.innerHTML = `<span>${sub}</span><button onclick="removeSubtaskField(${idx})">&times;</button>`;
+    const labelText = sub.meta ? `${sub.title} | ${sub.meta}` : sub.title;
+    div.innerHTML = `<span>${labelText}</span><button onclick="removeSubtaskField(${idx})">&times;</button>`;
     list.appendChild(div);
   });
 }
