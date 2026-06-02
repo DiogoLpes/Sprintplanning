@@ -102,7 +102,6 @@
 </head>
 <body>
 
-<!-- HERO HEADER -->
 <div class="hero-bg px-6 py-6">
   <div class="max-w-screen-2xl mx-auto">
     <div class="flex flex-wrap items-start justify-between gap-4">
@@ -115,7 +114,6 @@
         <p class="text-slate-400 text-sm mt-1">Fundação António Aleixo · Django 5 + React 18 + PostgreSQL · Docker</p>
       </div>
 
-      <!-- TEAM LEGEND -->
       <div class="flex flex-wrap gap-2 items-center">
         <span class="chip chip-adrien">Adrien</span>
         <span class="chip chip-diogo">Diogo</span>
@@ -124,7 +122,6 @@
       </div>
     </div>
 
-    <!-- STATS -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
       <div class="stat-card px-4 py-3">
         <div class="mono text-xs text-slate-500 mb-1">TOTAL TASKS</div>
@@ -147,11 +144,9 @@
   </div>
 </div>
 
-<!-- BOARD -->
 <div class="overflow-x-auto px-6 py-6">
 <div class="flex gap-4 max-w-screen-2xl mx-auto" style="min-width: max-content;">
 
-  <!-- ═══════════════ BACKLOG / TO DO ═══════════════ -->
   <div class="board-col">
     <div class="col-todo bg-[#13151f] rounded-xl p-3">
       <div class="flex items-center justify-between mb-3 px-1">
@@ -161,889 +156,43 @@
           <button onclick="openCreateCardModal('col-todo')" class="text-indigo-400 hover:text-indigo-300 text-lg font-bold" title="Adicionar task">+</button>
         </div>
       </div>
-      <div class="space-y-2" id="col-todo">
-
-        <!-- BE-01 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">BE-01</span>
-                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0" title="Alta prioridade"></span>
-                <span class="tag-be chip text-xs rounded">BE</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Modelos de dados core (Django ORM)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Criar a estrutura de dados em Django que vai guardar tudo no banco: Disciplinas (Português, Matemática...), Tópicos por ano escolar, Recursos (vídeos, PDFs, exercícios), Jogos educativos e Livros. IMPORTANTE: Isto desbloqueia TUDO o resto do projeto — sem isto, não conseguimos construir a API nem o frontend.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-adrien">Adrien</span>
-            <span class="chip chip-diogo">Diogo</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Modelo Discipline (name, slug, icon, color)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Adrien · Seed via fixtures para as 3 disciplinas.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Modelo Topic com FK Discipline + school_year</div>
-              <div class="text-xs text-slate-500 mt-0.5">Adrien · choices 1–6 (1.º ao 6.º ano). Slug único por disciplina.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Modelo Resource (title, body, resource_type, file, url)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · types: video / pdf / text / exercise. FK para Topic.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Modelos Game e Book</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · Game: age_range, is_downloadable, area. Book: author, summary, themes.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Migrations + fixtures de seed (make migrate + make seed)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Adrien · Dados de exemplo para dev imediato.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- BE-02 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">BE-02</span>
-                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
-                <span class="tag-be chip text-xs rounded">BE</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">API REST com DRF + OpenAPI (Swagger)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Criar os endpoints que o frontend consegue usar para buscar dados. Ex: GET /api/v1/disciplines/ retorna todas as disciplinas em JSON. Tem de funcionar com filtros (?discipline=português) e paginação. O Swagger (/api/docs/) é a documentação interativa que mostra todos os endpoints.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-adrien">Adrien</span>
-            <span class="chip chip-diogo">Diogo</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Serializers para todos os modelos</div>
-              <div class="text-xs text-slate-500 mt-0.5">Adrien · Read serializers públicos. Nested onde fizer sentido (Topic → Discipline).</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">ViewSets e routers em /api/v1/</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · /disciplines/ | /topics/?discipline=&year= | /resources/?topic= | /games/ | /books/</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Configurar drf-spectacular + Swagger UI em /api/docs/</div>
-              <div class="text-xs text-slate-500 mt-0.5">Adrien · @extend_schema nos endpoints relevantes.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Filtros full-text (django-filter + PostgreSQL search)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · ?search= filtra Resources. ?discipline= e ?year= filtram Topics.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- BE-03 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">BE-03</span>
-                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
-                <span class="tag-be chip text-xs rounded">BE</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Django Admin customizado (CMS para o cliente)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Personalizar a área de admin padrão do Django para que a equipa da Fundação consiga adicionar/editar conteúdos sem saber programar. Tem de ter UI bonita (jazzmin ou unfold), filtros inteligentes, e validações. Requisito CRÍTICO — o cliente precisa disto para manter o site atualizado.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-adrien">Adrien</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Registar modelos com ModelAdmin customizado</div>
-              <div class="text-xs text-slate-500 mt-0.5">list_display, list_filter, search_fields por modelo.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Instalar django-jazzmin ou unfold para UI amigável</div>
-              <div class="text-xs text-slate-500 mt-0.5">Dashboard com logo Integra-te, cores do projeto, sidebar organizada por secções.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Auto-criação de superuser no entrypoint.sh</div>
-              <div class="text-xs text-slate-500 mt-0.5">Via env vars DJANGO_SUPERUSER_*. Sem interação manual.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- FE-01 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">FE-01</span>
-                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
-                <span class="tag-fe chip text-xs rounded">FE</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Tailwind config + Router + Cliente Axios</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Setup inicial do React: configurar as cores do Integra-te em Tailwind (azul, amarelo, rosa...), router para todas as páginas (homepage, aprender, jogos, livros), e cliente Axios que se conecta à API do backend. Depois disto, o frontend consegue carregar dados da API e renderizar.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-giulio">Giulio</span>
-            <span class="chip chip-diogo">Diogo</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Configurar paleta Integra-te em tailwind.config.js</div>
-              <div class="text-xs text-slate-500 mt-0.5">Giulio · Azul, amarelo, salmão, roxo, verde, rosa. Gradiente amarelo→rosa.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Configurar React Router v6 com todas as rotas</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · /, /aprender, /aprender/:disciplina, /resolver, /jogar, /ler, /sobre, /contactos</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Cliente Axios em src/api/client.js</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · VITE_API_URL via env. Interceptor para erros globais.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Definir estrutura de pastas: components/ pages/ hooks/ api/ assets/</div>
-              <div class="text-xs text-slate-500 mt-0.5">Giulio · Convenção de nomes acordada. README atualizado.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- FE-02 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">FE-02</span>
-                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
-                <span class="tag-fe chip text-xs rounded">FE</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Componentes base + identidade visual</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Criar os componentes React que todas as páginas vão usar: Header com navegação sticky (fica no topo quando scrollas), Footer com logótipos EU/Portugal 2030 (OBRIGATÓRIO por lei de co-financiamento), Button, Card, e outros componentes reutilizáveis. Garante que tudo tem a mesma identidade visual.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-giulio">Giulio</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Header com sticky nav e logótipo Integra-te</div>
-              <div class="text-xs text-slate-500 mt-0.5">Hamburger menu responsivo em mobile. Todos os links do menu.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Footer com links úteis, RGPD, logótipos EU/Portugal 2030</div>
-              <div class="text-xs text-slate-500 mt-0.5">⚠️ Logótipos obrigatórios por co-financiamento europeu.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Componentes base: Button, Card, DisciplineBlock, SectionTitle, Spinner</div>
-              <div class="text-xs text-slate-500 mt-0.5">Variantes de cor e tamanho. aria-label onde necessário.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- FE-03 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">FE-03</span>
-                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
-                <span class="tag-full chip text-xs rounded">FULL</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Homepage completa (ligada à API)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">A página inicial que vê logo que entra. Tem: hero section bonito com 4 blocos para as áreas (Aprender, Resolver, Jogar, Ler), sobre o projeto (texto acessível para pais com baixa literacia), e secção de apoio a famílias. Os dados vêm da API — não são textos hardcoded.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-giulio">Giulio</span>
-            <span class="chip chip-diogo">Diogo</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Hero section com gradiente e 4 blocos de acesso rápido</div>
-              <div class="text-xs text-slate-500 mt-0.5">Giulio · Cards coloridos por área. Mobile-first. Animações suaves.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Secção "Sobre o Projeto" estática com missão e impacto</div>
-              <div class="text-xs text-slate-500 mt-0.5">Giulio · Missão, objetivos, público-alvo. Texto acessível (baixa literacia).</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Integração com API: Hook useDisciplines()</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · React Query / SWR. Loading + error states. Revalidation automática.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Secção de estatísticas (número de recursos, disciplinas, etc)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · Cards com números. Vêm da API. Animação ao carregar.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- BE-06 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">BE-06</span>
-                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
-                <span class="tag-be chip text-xs rounded">BE</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Feature EDIT: Endpoints para editar conteúdo (protegido)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Criar endpoints PUT/PATCH e DELETE para editar/apagar recursos da API. Apenas admins e editors conseguem. Ex: PUT /api/v1/resources/123/ com novos dados. Integrado no Django Admin. Permitir que a equipa da Fundação atualize conteúdos sem contactar programadores.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-cristian">Cristian</span>
-            <span class="chip chip-adrien">Adrien</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Implementar ViewSets com update/partial_update/destroy</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · DisciplineViewSet, TopicViewSet, ResourceViewSet, GameViewSet, BookViewSet.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Validação de permissões: IsAdminUser ou IsEditor</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · GET público. POST/PUT/PATCH/DELETE protegidos. Custom permission class.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Testes para PUT/PATCH/DELETE (com autenticação)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian + Adrien · Testar sucesso (200) e rejeição sem permissão (401/403).</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Integração no Django Admin (update_fields customizado)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Adrien · Admin consegue salvar mudanças direto. Validações ativas.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- BE-07 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">BE-07</span>
-                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
-                <span class="tag-be chip text-xs rounded">BE</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Upload de ficheiros (imagens, vídeos, PDFs)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Permitir upload de media files (imagens de recursos, capas de livros, thumbnails de jogos, PDFs). Usar Django Storage (local ou S3) + scanning de segurança (virus check). Limpar uploads inválidos automaticamente. Integrado com Django Admin CMS.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-cristian">Cristian</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Configurar FileField + ImageField nos modelos</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · Resource.file, Book.cover, Game.thumbnail. Validação de tipos.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Endpoint POST /api/v1/upload/ com multipart form</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · Retorna URL do arquivo. Validação de tamanho + tipo MIME.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Integração no Django Admin (file picker widgets)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · Drag-and-drop de ficheiros no admin. Preview imagens.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Testes de upload com ficheiros válidos e inválidos</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · Testar size limit, tipo MIME inválido, segurança.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- CRS-01 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-pink-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">CRS-01</span>
-                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
-                <span class="tag-full chip text-xs rounded">FULL</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Página "Sobre" + Página "Contactos" (Frontend + Backend)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">2 páginas importantes: /sobre tem info sobre o projeto, equipa, impacto (conteúdo editável no admin). /contactos tem um formulário onde pais/educadores enviam mensagens. Frontend com validação + Backend com endpoint que guarda em DB.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-giulio">Giulio</span>
-            <span class="chip chip-adrien">Adrien</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Frontend: Criar página /sobre (conteúdo estático/dinâmico)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Giulio · Usar SectionTitle e Card do FE-02. História, equipa, missão, impacto. Responsivo.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Frontend: Criar página /contactos com formulário</div>
-              <div class="text-xs text-slate-500 mt-0.5">Giulio · Form com nome, email, mensagem. Validação no frontend + success/error states.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Backend: Endpoint Django POST /api/v1/contact/</div>
-              <div class="text-xs text-slate-500 mt-0.5">Adrien · Model Contact, Serializer, teste unitário de POST válido/inválido.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Backend: Model página About (title, content, team, etc.)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Adrien · Editável no admin (BE-03). GET /api/v1/about/ retorna dados.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- CRS-02 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-pink-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">CRS-02</span>
-                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
-                <span class="tag-test chip text-xs rounded">TEST</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Testes de integração para API REST (GET, POST, autenticação)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Escrever testes unitários em Django para garantir que todos os endpoints funcionam. Testes: GET retorna dados corretos, POST cria recursos, filtros funcionam, headers de autenticação rejeitam sem token, códigos HTTP corretos (200 OK, 401, 403, 404). Isto desbloqueia BE-06 (edit endpoints) e garante qualidade.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-cristian">Cristian</span>
-            <span class="chip chip-adrien">Adrien</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">APITestCase para GET /api/v1/disciplines/ e /topics/ com paginação</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · Verificar estrutura de resposta, status code, limite de items por página.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Testes de autenticação (token válido vs. sem token vs. token inválido)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Adrien · Endpoints públicos retornam 200. Endpoints protegidos retornam 401/403.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Testes de filtros: ?search=, ?discipline=, ?year= e ordenação</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · Verificar que resultados são filtrados corretamente. Testar sort.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Testes para 404 (recurso não existe) e 400 (query inválida)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Adrien · Mensagens de erro claras. Código HTTP correto.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- CRS-03 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-pink-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">CRS-03</span>
-                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
-                <span class="tag-fe chip text-xs rounded">FE</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Página de Recursos "Aprender" (Frontend)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">A página principal do app de aprendizagem. Mostra: 1) Grid com todas as disciplinas (Português, Matemática...). 2) Quando clicas numa, vê tópicos desse ano escolar. 3) Quando clicas num tópico, vê todos os recursos (vídeos, PDFs, exercícios). Tudo vem da API com filtros por disciplina e ano.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-giulio">Giulio</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Componente DisciplineList com grid de cards clicáveis</div>
-              <div class="text-xs text-slate-500 mt-0.5">Giulio · Listar todas as disciplinas com ícone, cor e nome. Layout responsivo grid.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Componente TopicList com filtro por disciplina e ano escolar</div>
-              <div class="text-xs text-slate-500 mt-0.5">Giulio · Dropdown de seleção de ano (1-6). Dados de hook useTopics(). Breadcrumb navigation.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Componente ResourceCard com preview e tipo de recurso</div>
-              <div class="text-xs text-slate-500 mt-0.5">Giulio · Card clicável com ícone de tipo (video, pdf, text, exercise). Hover action.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Modal ResourceDetail para abrir recurso (player, PDF viewer, etc)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Giulio · Mostrar conteúdo inline (video player, PDF embed, texto formatado).</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- FE-04 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-blue-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">FE-04</span>
-                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
-                <span class="tag-fe chip text-xs rounded">FE</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Página de Jogos com grid interativo</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Página /jogar com grid de cards de jogos educativos. Tem filtros: por idade (4+, 6+, 9+) e área (português, matemática...). Clica num jogo → abre modal com detalhes + botão "Jogar" (leva para URL ou download). Dados vêm da API.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-giulio">Giulio</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Componente GameCard com imagem, título e descrição</div>
-              <div class="text-xs text-slate-500 mt-0.5">Giulio · Estados: normal, hover com botão "Jogar".</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Hook useGames() e filtros por age_range e area</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · Dropdown de idade (4+, 6+, 9+) e área.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Modal para detalhe do jogo + botão download (se aplicável)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Giulio · Download link para jogos offline.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- BE-04 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-teal-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">BE-04</span>
-                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
-                <span class="tag-be chip text-xs rounded">BE</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Sistema de permissões e autenticação</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Setup de segurança no backend. Criar Groups (Admin, Editor, Viewer) com permissões diferentes. Admin consegue tudo, Editor consegue adicionar conteúdo, Viewer apenas lê. Implementar JWT ou Token authentication para que o frontend possa fazer login e aceder endpoints protegidos.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-adrien">Adrien</span>
-            <span class="chip chip-diogo">Diogo</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Configurar Django Groups (Admin, Editor, Viewer)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Adrien · Permissões de leitura/escrita por grupo.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Autenticação DRF (Token ou JWT)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · Implementar login endpoint + token issuance.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">IsAuthenticated permissions em endpoints críticos</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · POST/PUT/DELETE protegidos. GET público.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- BE-05 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-emerald-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">BE-05</span>
-                <span class="w-2 h-2 rounded-full prio-low flex-shrink-0"></span>
-                <span class="tag-test chip text-xs rounded">TEST</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Cobertura de testes backend (mínimo 80%)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Garantir que todo o código tem testes automatizados. Usar Factory Boy para criar dados de teste rapidamente. Coverage.py mede quantas linhas de código têm testes (objetivo: mínimo 80%). CI/CD valida isto em cada PR — se tiver menos, o merge é rejeitado.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-adrien">Adrien</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Factory Boy para criação de test data</div>
-              <div class="text-xs text-slate-500 mt-0.5">Adrien · DisciplineFactory, TopicFactory, ResourceFactory.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Testes de validação de modelos</div>
-              <div class="text-xs text-slate-500 mt-0.5">Adrien · Campos obrigatórios, unique_together, slugs.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Relatório de cobertura com coverage.py</div>
-              <div class="text-xs text-slate-500 mt-0.5">Adrien · Target: 80% min. CI valida coverage em cada PR.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- BE-06 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">BE-06</span>
-                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
-                <span class="tag-be chip text-xs rounded">BE</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Feature EDIT: Endpoints para editar conteúdo (protegido)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Criar endpoints PUT/PATCH e DELETE para editar/apagar recursos da API. Apenas admins e editors conseguem. Ex: PUT /api/v1/resources/123/ com novos dados. Integrado no Django Admin. Permitir que a equipa da Fundação atualize conteúdos sem contactar programadores.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-cristian">Cristian</span>
-            <span class="chip chip-adrien">Adrien</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Implementar ViewSets com update/partial_update/destroy</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · DisciplineViewSet, TopicViewSet, ResourceViewSet, GameViewSet, BookViewSet.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Validação de permissões: IsAdminUser ou IsEditor</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · GET público. POST/PUT/PATCH/DELETE protegidos. Custom permission class.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Testes para PUT/PATCH/DELETE (com autenticação)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian + Adrien · Testar sucesso (200) e rejeição sem permissão (401/403).</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Integração no Django Admin (update_fields customizado)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Adrien · Admin consegue salvar mudanças direto. Validações ativas.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- BE-07 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">BE-07</span>
-                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
-                <span class="tag-be chip text-xs rounded">BE</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Upload de ficheiros (imagens, vídeos, PDFs)</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Permitir upload de media files (imagens de recursos, capas de livros, thumbnails de jogos, PDFs). Usar Django Storage (local ou S3) + scanning de segurança. Limpar uploads inválidos automaticamente. Integrado com Django Admin CMS para que o cliente upload conteúdo facilmente.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-cristian">Cristian</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Configurar FileField + ImageField nos modelos</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · Resource.file, Book.cover, Game.thumbnail. Validação de tipos MIME.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Endpoint POST /api/v1/upload/ com multipart form</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · Retorna URL do arquivo. Validação de tamanho máximo (50MB).</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Integração no Django Admin (file picker widgets)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · Drag-and-drop de ficheiros no admin. Preview de imagens.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Testes de upload com ficheiros válidos e inválidos</div>
-              <div class="text-xs text-slate-500 mt-0.5">Cristian · Testar size limit, tipo MIME inválido, edge cases.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- FE-05 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-blue-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">FE-05</span>
-                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
-                <span class="tag-fe chip text-xs rounded">FE</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Página de Livros com modal e detalhes</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Página /ler mostra grid de livros recomendados. Tem: input de busca por autor/título, filtros por tema. Clica num livro → modal com sinopse completa, temas, e links para comprar (Amazon, Wook) ou ir à biblioteca. Dados guardados na API.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-diogo">Diogo</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Componente BookCard com capa, autor e resumo</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · Imagem responsiva, fallback para sem capa.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Hook useBooks() com busca por autor/título</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · Input de search que filtra em tempo real.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Modal BookDetail com sinopse completa e links</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · Temas, links (Amazon, Wook, biblioteca municipal).</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- FE-06 -->
-        <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-pink-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">FE-06</span>
-                <span class="w-2 h-2 rounded-full prio-medium flex-shrink-0"></span>
-                <span class="tag-full chip text-xs rounded">FULL</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">Responsividade completa e testes E2E</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Garantir que o app funciona bem em mobile (320px), tablet (768px) e desktop (1920px). Sem overflow, sem elementos que saem do ecrã. Testes Cypress (automated browser) para fluxos críticos: homepage → clicar aprender → selecionar disciplina → ver recurso. Validar acessibilidade (cores, contraste, labels).</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-diogo">Diogo</span>
-            <span class="chip chip-giulio">Giulio</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Verificação responsiva (mobile 320px, tablet 768px, desktop 1920px)</div>
-              <div class="text-xs text-slate-500 mt-0.5">Giulio · Screenshots de cada breakpoint. Sem overflow.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Testes Cypress para fluxos principais</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · Homepage → Aprender → Selecionar disciplina → Ver recurso.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Audit de acessibilidade (axe) no CI</div>
-              <div class="text-xs text-slate-500 mt-0.5">Diogo · Cores, contraste, labels em formulários.</div>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- end col-todo -->
+      <div class="space-y-2" id="col-todo"></div>
     </div>
   </div>
 
-  <!-- ═══════════════ IN PROGRESS ═══════════════ -->
   <div class="board-col">
     <div class="col-progress bg-[#13151f] rounded-xl p-3">
       <div class="flex items-center justify-between mb-3 px-1">
-        <span class="font-semibold text-slate-200 text-sm">⚡ In Progress</span>
-        <div class="flex items-center gap-2">
-          <span class="mono text-xs bg-yellow-900/50 text-yellow-300 px-2 py-0.5 rounded-full col-count" data-col="progress">0</span>
-          <button onclick="openCreateCardModal('col-progress')" class="text-yellow-400 hover:text-yellow-300 text-lg font-bold" title="Adicionar task">+</button>
-        </div>
+        <span class="font-semibold text-slate-200 text-sm">⚡ Em Desenvolvimento</span>
+        <span class="mono text-xs bg-yellow-900/50 text-yellow-300 px-2 py-0.5 rounded-full col-count" data-col="progress">0</span>
       </div>
-      <div class="space-y-2" id="col-progress">
-
-        <!-- CI-01 -->
-        <div class="card bg-[#1a1d2e] border border-yellow-900/50 hover:border-yellow-700 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-500">CI-01</span>
-                <span class="w-2 h-2 rounded-full prio-high flex-shrink-0"></span>
-                <span class="tag-infra chip text-xs rounded">INFRA</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-100 leading-snug">GitHub Actions CI pipeline</div>
-              <p class="text-xs text-slate-400 mt-1 leading-relaxed">Lint (ruff + ESLint) e testes em cada PR. Branch protection em main.</p>
-            </div>
-            <span class="chevron text-slate-500 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-adrien">Adrien</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Criar .github/workflows/ci.yml</div>
-              <div class="text-xs text-slate-500 mt-0.5">Jobs: lint-backend, lint-frontend, test-backend. Trigger em PR para main.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Configurar ruff.toml e .eslintrc</div>
-              <div class="text-xs text-slate-500 mt-0.5">Regras base para Python e React/Tailwind.</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r">
-              <div class="text-xs font-medium text-slate-300">Branch protection em main no GitHub</div>
-              <div class="text-xs text-slate-500 mt-0.5">Require PR review + CI verde para merge.</div>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- end col-progress -->
-
-      <div class="mt-4 border-2 border-dashed border-yellow-900/30 rounded-lg p-3 text-center text-xs text-slate-600">
-        Mover tarefas para cá quando iniciadas
-      </div>
+      <div class="space-y-2" id="col-progress"></div>
     </div>
   </div>
 
-  <!-- ═══════════════ IN REVIEW ═══════════════ -->
   <div class="board-col">
     <div class="col-review bg-[#13151f] rounded-xl p-3">
       <div class="flex items-center justify-between mb-3 px-1">
-        <span class="font-semibold text-slate-200 text-sm">🔍 In Review</span>
-        <div class="flex items-center gap-2">
-          <span class="mono text-xs bg-purple-900/50 text-purple-300 px-2 py-0.5 rounded-full col-count" data-col="review">0</span>
-          <button onclick="openCreateCardModal('col-review')" class="text-purple-400 hover:text-purple-300 text-lg font-bold" title="Adicionar task">+</button>
-        </div>
+        <span class="font-semibold text-slate-200 text-sm">🔍 Em Revisão / PR</span>
+        <span class="mono text-xs bg-purple-900/50 text-purple-300 px-2 py-0.5 rounded-full col-count" data-col="review">0</span>
       </div>
-      <div class="space-y-2" id="col-review">
-      </div>
-      <div class="mt-2 border-2 border-dashed border-purple-900/30 rounded-lg p-4 text-center text-xs text-slate-600">
-        PR aberto + code review pendente
-      </div>
+      <div class="space-y-2" id="col-review"></div>
     </div>
   </div>
 
-  <!-- ═══════════════ DONE ═══════════════ -->
   <div class="board-col">
     <div class="col-done bg-[#13151f] rounded-xl p-3">
       <div class="flex items-center justify-between mb-3 px-1">
-        <span class="font-semibold text-slate-200 text-sm">✅ Done</span>
-        <div class="flex items-center gap-2">
-          <span class="mono text-xs bg-green-900/50 text-green-300 px-2 py-0.5 rounded-full col-count" data-col="done">0</span>
-          <button onclick="openCreateCardModal('col-done')" class="text-green-400 hover:text-green-300 text-lg font-bold" title="Adicionar task">+</button>
-        </div>
+        <span class="font-semibold text-slate-200 text-sm">✅ Concluído</span>
+        <span class="mono text-xs bg-green-900/50 text-green-300 px-2 py-0.5 rounded-full col-count" data-col="done">0</span>
       </div>
-      <div class="space-y-2" id="col-done">
-
-        <!-- INFRA-00 já feito -->
-        <div class="card bg-[#141a14] border border-green-900/40 rounded-xl p-3 opacity-70" onclick="toggleCard(event)">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="mono text-xs text-slate-600">INFRA-00</span>
-                <span class="tag-infra chip text-xs rounded">INFRA</span>
-                <span class="mono text-xs text-green-600">✓ concluído</span>
-              </div>
-              <div class="font-semibold text-sm text-slate-400 leading-snug">Estrutura base do projeto</div>
-              <p class="text-xs text-slate-600 mt-1">Docker Compose (frontend + backend + db), Makefile, Dockerfiles, repositório Git configurado.</p>
-            </div>
-            <span class="chevron text-slate-600 text-xs mt-1">▾</span>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-2">
-            <span class="chip chip-all">Equipa</span>
-          </div>
-          <div class="subtasks mt-3 space-y-2">
-            <div class="subtask-row pl-3 py-1 rounded-r opacity-60">
-              <div class="text-xs font-medium text-slate-500 line-through">docker-compose.yml com serviços db, backend, frontend</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r opacity-60">
-              <div class="text-xs font-medium text-slate-500 line-through">Makefile com targets base</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r opacity-60">
-              <div class="text-xs font-medium text-slate-500 line-through">Dockerfiles para Django e React/Vite</div>
-            </div>
-            <div class="subtask-row pl-3 py-1 rounded-r opacity-60">
-              <div class="text-xs font-medium text-slate-500 line-through">Repositório Git com .gitignore e README inicial</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+      <div class="space-y-2" id="col-done"></div>
     </div>
   </div>
 
-</div><!-- end board flex -->
-</div><!-- end overflow-x-auto -->
-
-<!-- MODAL PARA EDITAR CARD -->
-<div id="editCardModal" class="modal-overlay hidden">
-  <div class="modal">
-    <div class="modal-header">
-      <h2 class="text-lg font-bold text-white">Editar Card</h2>
-    </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label class="form-label">Título</label>
-        <input type="text" id="editCardTitle" class="form-input" placeholder="Título da task...">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Descrição</label>
-        <textarea id="editCardDesc" class="form-textarea" placeholder="Descrição detalhada..."></textarea>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button onclick="closeEditCardModal()" class="btn btn-secondary">Cancelar</button>
-      <button onclick="saveEditCard()" class="btn btn-primary">Guardar</button>
-      <button onclick="deleteCard()" class="btn" style="background: #ef4444; color: white; margin-left: auto;">Eliminar</button>
-    </div>
-  </div>
+</div>
 </div>
 
-<!-- MODAL PARA CRIAR NOVA TASK -->
-<div id="createCardModal" class="modal-overlay hidden">
-  <div class="modal">
-    <div class="modal-header">
-      <h2 class="text-lg font-bold text-white">Criar nova task</h2>
-    </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label class="form-label">ID da task (ex: BE-06)</label>
-        <input type="text" id="cardId" class="form-input" placeholder="BE-06">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Título</label>
-        <input type="text" id="cardTitle" class="form-input" placeholder="Setup do projeto X">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Descrição</label>
-        <textarea id="cardDesc" class="form-textarea" placeholder="Descrição detalhada da task..."></textarea>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Tipo</label>
-        <select id="cardType" class="form-select">
-          <option value="fe">FE - Frontend</option>
-          <option value="be">BE - Backend</option>
-          <option value="full">FULL - Full Stack</option>
-          <option value="infra">INFRA - Infraestrutura</option>
-          <option value="test">TEST - Testes</option>
-          <option value="doc">DOC - Documentação</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Prioridade</label>
-        <select id="cardPrio" class="form-select">
-          <option value="high">🔴 Alta</option>
-          <option value="medium">🟡 Média</option>
-          <option value="low">🟢 Baixa</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Membros atribuídos</label>
-        <div class="space-y-2">
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" id="member-adrien" class="w-4 h-4" style="accent-color: #93c5fd;">
-            <span class="chip chip-adrien">Adrien</span>
-          </label>
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" id="member-diogo" class="w-4 h-4" style="accent-color: #6ee7b7;">
-            <span class="chip chip-diogo">Diogo</span>
-          </label>
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" id="member-giulio" class="w-4 h-4" style="accent-color: #fdba74;">
-            <span class="chip chip-giulio">Giulio</span>
-          </label>
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" id="member-cristian" class="w-4 h-4" style="accent-color: #d8b4fe;">
-            <span class="chip chip-cristian">Cristian</span>
-          </label>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Subtasks</label>
-        <div class="subtask-input">
-          <input type="text" id="subtaskInput" class="form-input" placeholder="Adicionar nova subtask...">
-          <button onclick="addSubtaskField()" class="btn btn-primary btn-sm">Adicionar</button>
-        </div>
-        <div id="subtasksList"></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button onclick="closeCreateCardModal()" class="btn btn-secondary">Cancelar</button>
-      <button onclick="saveNewCard()" class="btn btn-primary">Criar task</button>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════════════════════
-     GUIA DE ACOMPANHAMENTO DO SPRINT
-═══════════════════════════════════════════════════════ -->
 <div class="max-w-screen-2xl mx-auto px-6 pb-12">
   <div class="border-t border-[#1f2937] pt-8">
     <h2 class="text-xl font-bold text-white mb-1">📋 Como acompanhar este Sprint no dia a dia</h2>
@@ -1051,7 +200,6 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
 
-      <!-- Dia 1 -->
       <div class="bg-[#1a1d2e] border border-[#1f2937] rounded-xl p-4">
         <div class="flex items-center gap-2 mb-3">
           <span class="w-7 h-7 rounded-lg bg-indigo-900/60 border border-indigo-800 flex items-center justify-center text-indigo-300 font-bold text-xs">1</span>
@@ -1066,7 +214,6 @@
         </ul>
       </div>
 
-      <!-- Daily Standup -->
       <div class="bg-[#1a1d2e] border border-[#1f2937] rounded-xl p-4">
         <div class="flex items-center gap-2 mb-3">
           <span class="w-7 h-7 rounded-lg bg-yellow-900/60 border border-yellow-800 flex items-center justify-center text-yellow-300 font-bold text-xs">2</span>
@@ -1082,7 +229,6 @@
         </ul>
       </div>
 
-      <!-- Git Workflow -->
       <div class="bg-[#1a1d2e] border border-[#1f2937] rounded-xl p-4">
         <div class="flex items-center gap-2 mb-3">
           <span class="w-7 h-7 rounded-lg bg-green-900/60 border border-green-800 flex items-center justify-center text-green-300 font-bold text-xs">3</span>
@@ -1098,7 +244,6 @@
         </ul>
       </div>
 
-      <!-- Dependências críticas -->
       <div class="bg-[#1a1d2e] border border-red-900/40 rounded-xl p-4">
         <div class="flex items-center gap-2 mb-3">
           <span class="w-7 h-7 rounded-lg bg-red-900/60 border border-red-800 flex items-center justify-center text-red-300 font-bold text-xs">4</span>
@@ -1113,7 +258,6 @@
         </ul>
       </div>
 
-      <!-- Mid-sprint check -->
       <div class="bg-[#1a1d2e] border border-[#1f2937] rounded-xl p-4">
         <div class="flex items-center gap-2 mb-3">
           <span class="w-7 h-7 rounded-lg bg-purple-900/60 border border-purple-800 flex items-center justify-center text-purple-300 font-bold text-xs">5</span>
@@ -1128,7 +272,6 @@
         </ul>
       </div>
 
-      <!-- Sprint Review -->
       <div class="bg-[#1a1d2e] border border-[#1f2937] rounded-xl p-4">
         <div class="flex items-center gap-2 mb-3">
           <span class="w-7 h-7 rounded-lg bg-indigo-900/60 border border-indigo-800 flex items-center justify-center text-indigo-300 font-bold text-xs">6</span>
@@ -1145,7 +288,6 @@
 
     </div>
 
-    <!-- Definition of Done -->
     <div class="mt-4 bg-[#1a1d2e] border border-green-900/40 rounded-xl p-4">
       <h3 class="font-semibold text-green-400 text-sm mb-3">✅ Definition of Done — uma task só vai para "Done" quando:</h3>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -1163,407 +305,587 @@
   </div>
 </div>
 
-<script>
-let draggedElement = null;
-let currentCardColumn = null;
-let subtasks = [];
-
-function toggleCard(event) {
-  // Clica no card para expandir/fechar subtasks
-  const card = event.currentTarget;
-  card.classList.toggle('open');
-}
-
-// Modal functions
-function openCreateCardModal(columnId) {
-  currentCardColumn = columnId;
-  subtasks = [];
-  document.getElementById('cardId').value = '';
-  document.getElementById('cardTitle').value = '';
-  document.getElementById('cardDesc').value = '';
-  document.getElementById('cardType').value = 'be';
-  document.getElementById('cardPrio').value = 'medium';
-  document.getElementById('member-adrien').checked = false;
-  document.getElementById('member-diogo').checked = false;
-  document.getElementById('member-giulio').checked = false;
-  document.getElementById('member-cristian').checked = false;
-  document.getElementById('subtaskInput').value = '';
-  document.getElementById('subtasksList').innerHTML = '';
-  document.getElementById('createCardModal').classList.remove('hidden');
-}
-
-function closeCreateCardModal() {
-  document.getElementById('createCardModal').classList.add('hidden');
-  currentCardColumn = null;
-  subtasks = [];
-}
-
-function addSubtaskField() {
-  const input = document.getElementById('subtaskInput');
-  const text = input.value.trim();
-  if (!text) return;
-  
-  subtasks.push(text);
-  renderSubtasks();
-  input.value = '';
-}
-
-function removeSubtask(index) {
-  subtasks.splice(index, 1);
-  renderSubtasks();
-}
-
-function renderSubtasks() {
-  const container = document.getElementById('subtasksList');
-  container.innerHTML = subtasks.map((st, i) => `
-    <div class="subtask-item">
-      <span>${st}</span>
-      <button onclick="removeSubtask(${i})">×</button>
+<div id="createCardModal" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header flex justify-between items-center">
+      <h3 class="text-base font-bold text-white">Criar Nova Tarefa</h3>
+      <button onclick="closeCreateCardModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
     </div>
-  `).join('');
+    <div class="modal-body">
+      <form id="createCardForm" onsubmit="handleCreateCard(event)">
+        <input type="hidden" id="createCardColId" value="">
+        <div class="form-group">
+          <label class="form-label">ID / Código</label>
+          <input type="text" id="createCardCode" class="form-input" placeholder="Ex: DEV-01" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Título da Tarefa</label>
+          <input type="text" id="createCardTitle" class="form-input" placeholder="Nome da task..." required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Descrição</label>
+          <textarea id="createCardDesc" class="form-textarea" placeholder="Detalhes da tarefa..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tipo de Tag</label>
+          <select id="createCardTag" class="form-select">
+            <option value="tag-infra">DevOps / Estrutura</option>
+            <option value="tag-be">Backend</option>
+            <option value="tag-fe">Frontend</option>
+            <option value="tag-doc">Documentação</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Prioridade</label>
+          <select id="createCardPrio" class="form-select">
+            <option value="prio-high">Alta</option>
+            <option value="prio-medium" selected>Média</option>
+            <option value="prio-low">Baixa</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Membros Atribuídos</label>
+          <div class="flex gap-4 mt-1 bg-[#0f1117] p-2 rounded border border-[#1f2937]">
+            <label class="flex items-center gap-2 cursor-pointer text-sm text-slate-300"><input type="checkbox" value="Adrien" class="create-member-checkbox"> Adrien</label>
+            <label class="flex items-center gap-2 cursor-pointer text-sm text-slate-300"><input type="checkbox" value="Diogo" class="create-member-checkbox"> Diogo</label>
+            <label class="flex items-center gap-2 cursor-pointer text-sm text-slate-300"><input type="checkbox" value="Giulio" class="create-member-checkbox"> Giulio</label>
+            <label class="flex items-center gap-2 cursor-pointer text-sm text-slate-300"><input type="checkbox" value="Cristian" class="create-member-checkbox"> Cristian</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subtarefas</label>
+          <div class="subtask-input">
+            <input type="text" id="subtaskInput" class="form-input" placeholder="Adicionar subtarefa...">
+            <button type="button" onclick="addSubtaskField()" class="btn btn-secondary btn-sm">+</button>
+          </div>
+          <div id="modalSubtaskList" class="space-y-1 mt-2"></div>
+        </div>
+        <div class="modal-footer px-0 pb-0">
+          <button type="button" onclick="closeCreateCardModal()" class="btn btn-secondary">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Criar Tarefa</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="editCardModal" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header flex justify-between items-center">
+      <h3 class="text-base font-bold text-white">Editar Tarefa</h3>
+      <button onclick="closeEditCardModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="editCardForm" onsubmit="handleEditCard(event)">
+        <input type="hidden" id="editCardId" value="">
+        <div class="form-group">
+          <label class="form-label">Título da Tarefa</label>
+          <input type="text" id="editCardTitle" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Descrição</label>
+          <textarea id="editCardDesc" class="form-textarea"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Membros Atribuídos (Selecione/Remova)</label>
+          <div class="flex gap-4 mt-1 bg-[#0f1117] p-2 rounded border border-[#1f2937]">
+            <label class="flex items-center gap-2 cursor-pointer text-sm text-slate-300"><input type="checkbox" value="Adrien" class="edit-member-checkbox"> Adrien</label>
+            <label class="flex items-center gap-2 cursor-pointer text-sm text-slate-300"><input type="checkbox" value="Diogo" class="edit-member-checkbox"> Diogo</label>
+            <label class="flex items-center gap-2 cursor-pointer text-sm text-slate-300"><input type="checkbox" value="Giulio" class="edit-member-checkbox"> Giulio</label>
+            <label class="flex items-center gap-2 cursor-pointer text-sm text-slate-300"><input type="checkbox" value="Cristian" class="edit-member-checkbox"> Cristian</label>
+          </div>
+        </div>
+        <div class="modal-footer px-0 pb-0 justify-between">
+          <button type="button" onclick="deleteCardFromModal()" class="btn btn-secondary bg-red-900/40 text-red-300 border border-red-800 hover:bg-red-800/60">Eliminar Task</button>
+          <div class="flex gap-2">
+            <button type="button" onclick="closeEditCardModal()" class="btn btn-secondary">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+const INITIAL_TASKS = [
+  {
+    id: "task-1", code: "DO-01", title: "Initialise GitHub repository",
+    desc: "Create repo, add .gitignore (Python + Node + .env + media/), Configure branch protection on main — merge via PR only, Create CONTRIBUTING.md with Conventional Commits convention, Set up PR template with checklist",
+    tag: "tag-infra", tagLabel: "DevOps / Structure", prio: "prio-high", members: ["Adrien"], columnId: "col-todo",
+    subtasks: ["Create repo, add .gitignore", "Configure branch protection on main", "Create CONTRIBUTING.md", "Set up PR template"]
+  },
+  {
+    id: "task-2", code: "DO-02", title: "Docker Compose full stack",
+    desc: "docker-compose.yml — services: db (postgres:16-alpine), backend, frontend; Healthcheck on db service (pg_isready); Backend Dockerfile; Frontend Dockerfile; entrypoint.sh: wait-for-db → migrate → collectstatic → start gunicorn; Write .env.example",
+    tag: "tag-infra", tagLabel: "DevOps / Structure", prio: "prio-high", members: ["Adrien"], columnId: "col-todo",
+    subtasks: ["docker-compose.yml configuring services", "Healthcheck on db service", "Backend Dockerfile setup", "Frontend Dockerfile setup", "entrypoint.sh script verification", "Write .env.example"]
+  },
+  {
+    id: "task-3", code: "DO-03", title: "GitHub Actions CI pipeline",
+    desc: "Workflow: lint Python with ruff on every PR; Workflow: lint JS/TS with ESLint on every PR; Workflow: run Django unit tests on every PR; CI status badge in README",
+    tag: "tag-infra", tagLabel: "DevOps / Structure", prio: "prio-medium", members: ["Adrien"], columnId: "col-todo",
+    subtasks: ["Workflow: lint Python with ruff", "Workflow: lint JS/TS with ESLint", "Workflow: run Django unit tests", "CI status badge in README"]
+  },
+  {
+    id: "task-4", code: "DO-04", title: "Production deployment checklist",
+    desc: "TLS/HTTPS confirmed, MEDIA_ROOT on persistent volume, Email API service credentials configured in .env, DJANGO_DEBUG=False, ALLOWED_HOSTS set, CORS_ALLOWED_ORIGINS set, collectstatic run, Git tag v1.0.0, Final PR merged",
+    tag: "tag-infra", tagLabel: "DevOps / Structure", prio: "prio-high", members: ["Adrien", "Diogo"], columnId: "col-todo",
+    subtasks: ["TLS/HTTPS verification", "MEDIA_ROOT volume configuration", "Email API service credentials", "Production flags security audit", "Git tag v1.0.0 deployment"]
+  },
+  {
+    id: "task-5", code: "BE-01", title: "Django project bootstrap (single app)",
+    desc: "django-admin startproject integra_te; Install: djangorestframework, django-cors-headers, drf-spectacular, Pillow, psycopg2-binary; settings.py variables configuration; Configure email via external API service; Root URL conf setup",
+    tag: "tag-be", tagLabel: "Backend", prio: "prio-high", members: ["Adrien"], columnId: "col-todo",
+    subtasks: ["django-admin project init", "Dependency installation", "settings.py initial setup", "Configure email setup via external API", "Create root URL configuration"]
+  },
+  {
+    id: "task-6", code: "BE-02", title: "Models: Disciplina, Tema, Conteudo",
+    desc: "Disciplina: id (UUID PK), nome, slug, desc, ordem; Tema: id, disciplina FK, titulo, desc, slug, ano_escolar (1–6), seccao, ordem, publicado; Conteudo: id, tema FK, tipo, titulo, corpo, ficheiro, url_externa, thumbnail, ordem, dificuldade, descarregavel, publicado",
+    tag: "tag-be", tagLabel: "Backend", prio: "prio-high", members: ["Adrien", "Cristian"], columnId: "col-todo",
+    subtasks: ["Disciplina architecture design", "Tema relational constraints", "Conteudo polymorphic fields", "Properties implementation (has_file, is_video)"]
+  },
+  {
+    id: "task-7", code: "BE-03", title: "Models: Jogo, Livro, MaterialOriginal",
+    desc: "Jogo: validations online→url_externa / imprimivel→ficheiro; Livro: id, titulo, autor, faixa_etaria, resumo, temas, capa, ficheiro, publicado; MaterialOriginal: fields definition",
+    tag: "tag-be", tagLabel: "Backend", prio: "prio-medium", members: ["Adrien", "Cristian"], columnId: "col-todo",
+    subtasks: ["Jogo model constraints & clean()", "Livro model properties", "MaterialOriginal model schema"]
+  },
+  {
+    id: "task-8", code: "BE-04", title: "Migrations & fixtures",
+    desc: "python manage.py makemigrations + migrate; fixtures/disciplinas.json setup; Data migration: enable pg_trgm + unaccent PostgreSQL extensions",
+    tag: "tag-be", tagLabel: "Backend", prio: "prio-medium", members: ["Adrien", "Cristian"], columnId: "col-todo",
+    subtasks: ["Run database initial migrations", "Create and populate fixtures disciplines", "Data migration for PostgreSQL extensions"]
+  },
+  {
+    id: "task-9", code: "BE-05", title: "All serializers",
+    desc: "DisciplinaSerializer, TemaListSerializer + Detail, ConteudoSerializer absolute URLs transformation, JogoSerializer, LivroSerializer, MaterialOriginalSerializer, MensagemContactoSerializer, PesquisaResultSerializer unified structure",
+    tag: "tag-be", tagLabel: "Backend", prio: "prio-high", members: ["Adrien", "Cristian"], columnId: "col-todo",
+    subtasks: ["Core models Serializers creation", "SerializerMethodField absolute URLs hooks", "Unified Search model JSON serializer"]
+  },
+  {
+    id: "task-10", code: "BE-06", title: "All views & URLs",
+    desc: "DisciplinaViewSet, TemaViewSet, JogoViewSet, LivroViewSet, ContactoCreateView triggers email, PesquisaView using pg_trgm + unaccent unified full-text index across models. Complete coverage unit testing",
+    tag: "tag-be", tagLabel: "Backend", prio: "prio-high", members: ["Adrien", "Cristian"], columnId: "col-todo",
+    subtasks: ["Implement functional ViewSets", "PesquisaView text-search algorithms", "Write complete robust API Unit tests"]
+  },
+  {
+    id: "task-11", code: "BE-07", title: "Django Admin / CMS",
+    desc: "DisciplinaAdmin config, TemaAdmin filters + ConteudoInline, ConteudoAdmin standalone filters, JogoAdmin, LivroAdmin, MaterialOriginalAdmin",
+    tag: "tag-be", tagLabel: "Backend", prio: "prio-low", members: ["Adrien"], columnId: "col-todo",
+    subtasks: ["Disciplina and Tema inline layout configuration", "Status filters customization and actions implementation"]
+  },
+  {
+    id: "task-12", code: "FE-01", title: "React + Vite project bootstrap",
+    desc: "npm create vite@latest TypeScript, Install core components router, axios, tailwindcss, tabler/icons, Set up path alias @/, Configure Vite proxy on local dev, Project folder organization setup",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-high", members: ["Adrien"], columnId: "col-todo",
+    subtasks: ["Vite environment setup & dependencies", "Configuring path aliases and proxy system", "Directory structure definition"]
+  },
+  {
+    id: "task-13", code: "FE-02", title: "Tailwind colour tokens",
+    desc: "Configure Tailwind CSS properties parsing seamlessly with custom layout design standard tokens dynamically mapped",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-medium", members: ["Giulio"], columnId: "col-todo",
+    subtasks: ["Map variables inside tailwind.config.js"]
+  },
+  {
+    id: "task-14", code: "FE-03", title: "<StickyHeader>",
+    desc: "Main responsive structural component navigation routing layout logic. Handles mobile burger trigger interactions gracefully",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-medium", members: ["Giulio"], columnId: "col-todo",
+    subtasks: ["Build adaptive layout navbar UI", "Add responsive drawer menus with animation hooks", "Ensure aria accessibility attributes matching standard"]
+  },
+  {
+    id: "task-15", code: "FE-04", title: "<HeroBanner>",
+    desc: "Central responsive visual layout presentation context text displaying main information accurately across device widths",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-low", members: ["Giulio"], columnId: "col-todo",
+    subtasks: ["Design branding section spacing elements"]
+  },
+  {
+    id: "task-16", code: "FE-05", title: "<AreaCards>, Sobre section, FAQ accordion",
+    desc: "4 interactive cards pointing to target routes, Hover microinteractions, static layout text description rendering and accordions states management",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-medium", members: ["Diogo"], columnId: "col-todo",
+    subtasks: ["AreaCards component styling and links integration", "Sobre block compilation", "FaqAccordion micro-state development"]
+  },
+  {
+    id: "task-17", code: "FE-06", title: "Footer",
+    desc: "Portugal 2030 + EU legally mandatory placement badges, privacy links, dynamic copy terms declaration mapping layer",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-low", members: ["Giulio"], columnId: "col-todo",
+    subtasks: ["Incorporate required vector brand symbols", "Build cross-page quick reference footpaths alignment"]
+  },
+  {
+    id: "task-18", code: "FE-07", title: "Shared components (src/shared/)",
+    desc: "Reusable template system elements: <DisciplineGrid>, <YearFilter>, <TopicList>, loaders, skeleton interfaces",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-high", members: ["Diogo"], columnId: "col-todo",
+    subtasks: ["Construct skeleton cards dynamic patterns", "Create DisciplineGrid dynamic connection", "Synchronize YearFilter state parameter URL"]
+  },
+  {
+    id: "task-19", code: "FE-08", title: "Aprender topic detail page",
+    desc: "Dynamically maps topic content fetched via endpoints: Texto, Imagem, Video iframe embedding security flags, Download component visibility triggers",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-high", members: ["Giulio"], columnId: "col-todo",
+    subtasks: ["Dynamic route page allocation", "No-cookie iframe sandboxing layout templates", "Download action protection check conditional mapping"]
+  },
+  {
+    id: "task-20", code: "FE-09", title: "Resolver topic detail page",
+    desc: "Mirror visual mapping tracking logic parsing specific conditional component layout elements: Difficulty Badge mapping standard matrix rendering",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-medium", members: ["Diogo"], columnId: "col-todo",
+    subtasks: ["Build functional workspace parameters", "Difficulty color coding logic integration"]
+  },
+  {
+    id: "task-21", code: "FE-10", title: "Play section (/jogar)",
+    desc: "TabBar interactive views: Online Tabs lists vs Project printables view cards. Handles age pills filter attributes easily",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-medium", members: ["Giulio"], columnId: "col-todo",
+    subtasks: ["Implement functional TabBar controls", "GameCard template data injection hooks", "Generate automatic age criteria list distribution values"]
+  },
+  {
+    id: "task-22", code: "FE-11", title: "Read section (/ler)",
+    desc: "Grid rendering for physical or downloadable assets layout. Multi-line CSS truncation clamps implementation",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-medium", members: ["Diogo"], columnId: "col-todo",
+    subtasks: ["BookCard clamp layout styling", "Original material item integration paths checking"]
+  },
+  {
+    id: "task-23", code: "FE-12", title: "Search page (/pesquisa)",
+    desc: "Advanced search routing wrapper query listeners. Includes TypeFilters, Discipline filters, debounce processing limits (300ms) optimizing network payloads",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-high", members: ["Adrien"], columnId: "col-todo",
+    subtasks: ["Debounced API connection configuration", "Sync search input with global query arguments", "Build multiple context criteria results listings"]
+  },
+  {
+    id: "task-24", code: "FE-13", title: "<VoiceSearchButton> — Web Speech API",
+    desc: "Native browser service recognition integration fallback checks. Handles active pulses animations, real-time transcription, alternative parameters parsing",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-high", members: ["Adrien"], columnId: "col-todo",
+    subtasks: ["Check browser engine voice compilation support", "Build listening animations state triggers", "Error capturing exception states logging UI handler"]
+  },
+  {
+    id: "task-25", code: "FE-14", title: "About page (/sobre)",
+    desc: "6 static sections layout grid displaying detailed operational background maps: História, Equipa, Missão, Metodologia, Público, Impacto",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-low", members: ["Diogo"], columnId: "col-todo",
+    subtasks: ["Structure document layout markup segments", "Anchor links quick jumps calculation index"]
+  },
+  {
+    id: "task-26", code: "FE-15", title: "Contact page (/contacto)",
+    desc: "Validates field input strings locally before dispatching data. Evaluates specific API payload validation errors, triggers inline warnings seamlessly",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-medium", members: ["Giulio"], columnId: "col-todo",
+    subtasks: ["Assemble React control form elements", "Map 400 bad requests fields tracking errors", "CSRF authentication middleware handshake token validation"]
+  },
+  {
+    id: "task-27", code: "FE-16", title: "Privacy page + <CookieBanner>",
+    desc: "Tracks authorization choices inside localStorage tracking cache configurations without interrupting direct visual navigation workflows",
+    tag: "tag-fe", tagLabel: "Frontend", prio: "prio-low", members: ["Diogo"], columnId: "col-todo",
+    subtasks: ["Privacy declaration content integration", "Cookie Consent Banner layout trigger layer"]
+  },
+  {
+    id: "task-28", code: "DOC-01", title: "Architecture diagram",
+    desc: "Maps system connectivity paths visually: Browser React SPA → Django API backend framework → Database architecture. Commits Excalidraw templates",
+    tag: "tag-doc", tagLabel: "Docs", prio: "prio-medium", members: ["Adrien", "Cristian", "Diogo", "Giulio"], columnId: "col-todo",
+    subtasks: ["Draft full layout architecture structure diagrams", "Commit resource binary assets into versions folder"]
+  },
+  {
+    id: "task-29", code: "DOC-02", title: "ER diagram",
+    desc: "Explicit model mapping defining fields types, constraints keys mapping definitions. Produced cleanly from Mermaid diagrams source templates",
+    tag: "tag-doc", tagLabel: "Docs", prio: "prio-medium", members: ["Adrien", "Giulio"], columnId: "col-todo",
+    subtasks: ["Mermaid syntax schema conversion checking", "Export high resolution entity relational charts"]
+  },
+  {
+    id: "task-30", code: "DOC-03", title: "API reference (OpenAPI / Swagger)",
+    desc: "Auto-generates schemas outputs using drf-spectacular hooks exporting standardized definitions files into code repositories repository tracking indexes",
+    tag: "tag-doc", tagLabel: "Docs", prio: "prio-high", members: ["Adrien", "Cristian"], columnId: "col-todo",
+    subtasks: ["Build spectacular settings profiles setup", "Inspect Swagger interface responses structure correctness"]
+  },
+  {
+    id: "task-31", code: "DOC-04", title: "CMS user guide",
+    desc: "End-user workflow documentation explaining backend administration tasks: create content, upload assets files, validate print options",
+    tag: "tag-doc", tagLabel: "Docs", prio: "prio-low", members: ["Giulio", "Cristian", "Diogo"], columnId: "col-todo",
+    subtasks: ["Write media uploading handbook tutorials", "Admin entry configurations guide drafting"]
+  },
+  {
+    id: "task-32", code: "DOC-05", title: "README.md + Installation guide",
+    desc: "Complete setup procedure walkthrough guide compilation details: docker orchestration initialization routines, fixture variables matching documentation profiles",
+    tag: "tag-doc", tagLabel: "Docs", prio: "prio-medium", members: ["Adrien", "Giulio"], columnId: "col-todo",
+    subtasks: ["Document docker system configuration recipes", "Compile production deployment checks checklists text"]
+  },
+  {
+    id: "task-33", code: "DOC-06", title: "Product demo recording",
+    desc: "Functional recording showcasing application operations flow context within 5 minutes threshold target rules limits",
+    tag: "tag-doc", tagLabel: "Docs", prio: "prio-medium", members: ["Adrien", "Cristian", "Diogo", "Giulio"], columnId: "col-todo",
+    subtasks: ["Record workflow validation screen capture videos", "Render final presentation files upload pipelines"]
+  }
+];
+
+let boardTasks = [];
+let currentNewSubtasks = [];
+
+function loadTasks() {
+  const saved = localStorage.getItem('sprintBoardTasksState');
+  if (saved) {
+    try {
+      boardTasks = JSON.parse(saved);
+    } catch(e) {
+      boardTasks = JSON.parse(JSON.stringify(INITIAL_TASKS));
+    }
+  } else {
+    boardTasks = JSON.parse(JSON.stringify(INITIAL_TASKS));
+    saveTasks();
+  }
 }
 
-function saveNewCard() {
-  const id = document.getElementById('cardId').value.trim();
-  const title = document.getElementById('cardTitle').value.trim();
-  const desc = document.getElementById('cardDesc').value.trim();
-  const type = document.getElementById('cardType').value;
-  const prio = document.getElementById('cardPrio').value;
-  
-  if (!id || !title) {
-    alert('ID e Título são obrigatórios!');
-    return;
-  }
+function saveTasks() {
+  localStorage.setItem('sprintBoardTasksState', JSON.stringify(boardTasks));
+}
 
-  const members = [];
-  if (document.getElementById('member-adrien').checked) members.push({name: 'Adrien', class: 'chip-adrien'});
-  if (document.getElementById('member-diogo').checked) members.push({name: 'Diogo', class: 'chip-diogo'});
-  if (document.getElementById('member-giulio').checked) members.push({name: 'Giulio', class: 'chip-giulio'});
-  if (document.getElementById('member-cristian').checked) members.push({name: 'Cristian', class: 'chip-cristian'});
+function renderBoard() {
+  document.getElementById('col-todo').innerHTML = '';
+  document.getElementById('col-progress').innerHTML = '';
+  document.getElementById('col-review').innerHTML = '';
+  document.getElementById('col-done').innerHTML = '';
 
-  if (members.length === 0) {
-    alert('Seleciona pelo menos um membro!');
-    return;
-  }
+  boardTasks.forEach(task => {
+    const colContainer = document.getElementById(task.columnId);
+    if (!colContainer) return;
 
-  // Criar o card HTML
-  const tagClass = `tag-${type}`;
-  const tagDisplay = type === 'full' ? 'FULL' : type.toUpperCase();
-  const prioClass = `prio-${prio}`;
-  
-  let subtaskHtml = '';
-  if (subtasks.length > 0) {
-    subtaskHtml = `
-      <div class="subtasks mt-3 space-y-2">
-        ${subtasks.map(st => `
-          <div class="subtask-row pl-3 py-1 rounded-r">
-            <div class="text-xs font-medium text-slate-300">${st}</div>
-          </div>
-        `).join('')}
-      </div>
-    `;
-  }
+    const cardEl = document.createElement('div');
+    cardEl.className = "card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3";
+    cardEl.setAttribute('draggable', 'true');
+    cardEl.setAttribute('data-id', task.id);
+    
+    cardEl.addEventListener('dragstart', handleDragStart);
+    cardEl.addEventListener('click', toggleCard);
 
-  const memberChips = members.map(m => `<span class="chip chip-${m.class.split('-')[1]}">${m.name}</span>`).join('');
+    let memberChips = task.members.map(m => {
+      const cls = 'chip-' + m.toLowerCase().trim();
+      return `<span class="chip ${cls}">${m}</span>`;
+    }).join(' ');
 
-  const cardHTML = `
-    <div class="card bg-[#1a1d2e] border border-[#1f2937] hover:border-indigo-800 rounded-xl p-3" draggable="true" onclick="toggleCard(event)">
+    let subtasksHtml = task.subtasks && task.subtasks.length > 0 ? 
+      task.subtasks.map(sub => `
+        <div class="subtask-row pl-3 py-1 rounded-r">
+          <div class="text-xs font-medium text-slate-300">${sub}</div>
+        </div>
+      `).join('') : '<div class="text-xs text-slate-500 italic">Sem subtarefas adicionadas.</div>';
+
+    cardEl.innerHTML = `
       <div class="flex items-start justify-between gap-2">
         <div class="flex-1">
           <div class="flex items-center gap-2 mb-2">
-            <span class="mono text-xs text-slate-500">${id}</span>
-            <span class="w-2 h-2 rounded-full ${prioClass} flex-shrink-0"></span>
-            <span class="tag-${type} chip text-xs rounded">${tagDisplay}</span>
+            <span class="mono text-xs text-slate-500">${task.code}</span>
+            <span class="w-2 h-2 rounded-full ${task.prio} flex-shrink-0"></span>
+            <span class="${task.tag} chip text-xs rounded">${task.tagLabel || 'Task'}</span>
           </div>
-          <div class="font-semibold text-sm text-slate-100 leading-snug">${title}</div>
-          <p class="text-xs text-slate-400 mt-1 leading-relaxed">${desc}</p>
+          <div class="font-semibold text-sm text-slate-100 leading-snug">${task.title}</div>
+          <p class="text-xs text-slate-400 mt-1 leading-relaxed">${task.desc}</p>
         </div>
-        <div class="flex items-center gap-1 flex-shrink-0">
-          <button onclick="openEditCardModal(event)" class="text-slate-400 hover:text-blue-400 text-xs px-2 py-1 rounded hover:bg-slate-800 transition" title="Editar card">✎</button>
-          <span class="chevron text-slate-500 text-xs mt-1">▾</span>
+        <div class="flex flex-col items-end justify-between h-full gap-4">
+          <span class="chevron text-slate-500 text-xs">▾</span>
+          <button onclick="openEditCardModal(event, '${task.id}')" class="text-xs text-indigo-400 hover:underline hover:text-indigo-300" title="Editar tarefa/responsáveis">Editar</button>
         </div>
       </div>
       <div class="flex flex-wrap gap-1 mt-2">
         ${memberChips}
       </div>
-      ${subtaskHtml}
-    </div>
-  `;
-
-  const column = document.getElementById(currentCardColumn);
-  column.insertAdjacentHTML('beforeend', cardHTML);
-  
-  // Setup drag para o novo card
-  const newCard = column.lastElementChild;
-  newCard.addEventListener('dragstart', (e) => {
-    draggedElement = newCard;
-    newCard.style.opacity = '0.5';
-    e.dataTransfer.effectAllowed = 'move';
-  });
-
-  newCard.addEventListener('dragend', () => {
-    newCard.style.opacity = '1';
-    draggedElement = null;
+      <div class="subtasks mt-3 space-y-2">
+        ${subtasksHtml}
+      </div>
+    `;
+    colContainer.appendChild(cardEl);
   });
 
   updateStats();
-  saveBoardState();
+}
+
+function populateMemberCheckboxes(containerClass, memberArray) {
+  const checkboxes = document.querySelectorAll(`.${containerClass}`);
+  checkboxes.forEach(cb => {
+    cb.checked = memberArray.includes(cb.value);
+  });
+}
+
+function getSelectedMembersFromCheckboxes(containerClass) {
+  const checkboxes = document.querySelectorAll(`.${containerClass}`);
+  let selected = [];
+  checkboxes.forEach(cb => {
+    if (cb.checked) selected.push(cb.value);
+  });
+  return selected;
+}
+
+function openCreateCardModal(columnId) {
+  document.getElementById('createCardColId').value = columnId;
+  document.getElementById('createCardForm').reset();
+  currentNewSubtasks = [];
+  document.getElementById('modalSubtaskList').innerHTML = '';
+  populateMemberCheckboxes('create-member-checkbox', []);
+  document.getElementById('createCardModal').classList.remove('hidden');
+}
+
+function closeCreateCardModal() {
+  document.getElementById('createCardModal').classList.add('hidden');
+}
+
+function addSubtaskField() {
+  const input = document.getElementById('subtaskInput');
+  const val = input.value.trim();
+  if(!val) return;
+  currentNewSubtasks.push(val);
+  input.value = '';
+  renderModalSubtasks();
+}
+
+function removeNewSubtask(index) {
+  currentNewSubtasks.splice(index, 1);
+  renderModalSubtasks();
+}
+
+function renderModalSubtasks() {
+  const container = document.getElementById('modalSubtaskList');
+  container.innerHTML = currentNewSubtasks.map((sub, i) => `
+    <div class="subtask-item">
+      <span>${sub}</span>
+      <button type="button" onclick="removeNewSubtask(${i})">&times;</button>
+    </div>
+  `).join('');
+}
+
+function handleCreateCard(e) {
+  e.preventDefault();
+  const colId = document.getElementById('createCardColId').value;
+  const code = document.getElementById('createCardCode').value;
+  const title = document.getElementById('createCardTitle').value;
+  const desc = document.getElementById('createCardDesc').value;
+  const tag = document.getElementById('createCardTag').value;
+  const selectTagEl = document.getElementById('createCardTag');
+  const tagLabel = selectTagEl.options[selectTagEl.selectedIndex].text;
+  const prio = document.getElementById('createCardPrio').value;
+  
+  const members = getSelectedMembersFromCheckboxes('create-member-checkbox');
+
+  const newTask = {
+    id: 'task-' + Date.now(),
+    code, title, desc, tag, tagLabel, prio,
+    members, columnId: colId,
+    subtasks: [...currentNewSubtasks]
+  };
+
+  boardTasks.push(newTask);
+  saveTasks();
+  renderBoard();
   closeCreateCardModal();
-  addEditButtonsToAllCards();
 }
 
-// Drag & Drop functionality
-function setupDragAndDrop() {
-  const cards = document.querySelectorAll('.card[draggable="true"]');
+function openEditCardModal(e, taskId) {
+  e.stopPropagation();
+  const task = boardTasks.find(t => t.id === taskId);
+  if(!task) return;
+
+  document.getElementById('editCardId').value = task.id;
+  document.getElementById('editCardTitle').value = task.title;
+  document.getElementById('editCardDesc').value = task.desc;
   
-  cards.forEach(card => {
-    card.addEventListener('dragstart', (e) => {
-      draggedElement = card;
-      card.style.opacity = '0.5';
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/html', card.innerHTML);
-    });
+  populateMemberCheckboxes('edit-member-checkbox', task.members);
 
-    card.addEventListener('dragend', () => {
-      card.style.opacity = '1';
-      draggedElement = null;
-    });
-  });
-
-  // Setup drop zones
-  const columns = document.querySelectorAll('[id^="col-"]');
-  columns.forEach(column => {
-    column.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      column.style.borderRadius = '8px';
-      column.style.backgroundColor = 'rgba(99, 102, 241, 0.1)';
-    });
-
-    column.addEventListener('dragleave', (e) => {
-      // Check if dragging over child elements
-      if (e.target === column) {
-        column.style.backgroundColor = '';
-      }
-    });
-
-    column.addEventListener('drop', (e) => {
-      e.preventDefault();
-      column.style.backgroundColor = '';
-      
-      if (draggedElement && draggedElement.parentElement !== column) {
-        column.appendChild(draggedElement);
-        updateStats();
-        saveBoardState();
-      }
-    });
-  });
-}
-
-function updateStats() {
-  const todo     = document.querySelectorAll('#col-todo .card:not(.opacity-70)').length;
-  const progress = document.querySelectorAll('#col-progress .card').length;
-  const review   = document.querySelectorAll('#col-review .card').length;
-  const done     = document.querySelectorAll('#col-done .card').length;
-  const total    = todo + progress + review + done;
-  const pct      = total > 0 ? Math.round((done / total) * 100) : 0;
-
-  document.getElementById('stat-total').textContent    = total;
-  document.getElementById('stat-progress').textContent = progress + review;
-  document.getElementById('stat-done').textContent     = done;
-  document.getElementById('stat-pct').textContent      = pct + '%';
-  document.getElementById('progress-fill').style.width = pct + '%';
-
-  document.querySelectorAll('.col-count').forEach(el => {
-    const col = el.dataset.col;
-    if (col === 'todo')     el.textContent = todo;
-    if (col === 'progress') el.textContent = progress;
-    if (col === 'review')   el.textContent = review;
-    if (col === 'done')     el.textContent = done;
-  });
-}
-
-// ============ EDIT CARD FUNCTIONS ============
-let editingCard = null;
-
-function addEditButtonsToAllCards() {
-  document.querySelectorAll('.card[draggable="true"]').forEach(card => {
-    // Verificar se já tem botão de edição
-    if (card.querySelector('button[onclick="openEditCardModal(event)"]')) {
-      return;
-    }
-    
-    const chevron = card.querySelector('.chevron');
-    if (chevron) {
-      const editBtn = document.createElement('button');
-      editBtn.onclick = (e) => openEditCardModal(e);
-      editBtn.className = 'text-slate-400 hover:text-blue-400 text-xs px-2 py-1 rounded hover:bg-slate-800 transition';
-      editBtn.title = 'Editar card';
-      editBtn.textContent = '✎';
-      
-      chevron.parentElement.insertBefore(editBtn, chevron);
-    }
-  });
-}
-
-function openEditCardModal(event) {
-  event.stopPropagation();
-  
-  const card = event.target.closest('.card');
-  if (!card) return;
-  
-  editingCard = card;
-  
-  const titleEl = card.querySelector('.font-semibold.text-sm');
-  const descEl = card.querySelector('.text-xs.text-slate-400.mt-1');
-  
-  document.getElementById('editCardTitle').value = titleEl?.textContent || '';
-  document.getElementById('editCardDesc').value = descEl?.textContent || '';
-  
   document.getElementById('editCardModal').classList.remove('hidden');
 }
 
 function closeEditCardModal() {
   document.getElementById('editCardModal').classList.add('hidden');
-  editingCard = null;
 }
 
-function saveEditCard() {
-  if (!editingCard) return;
-  
-  const newTitle = document.getElementById('editCardTitle').value.trim();
-  const newDesc = document.getElementById('editCardDesc').value.trim();
-  
-  if (!newTitle) {
-    alert('Título é obrigatório!');
-    return;
-  }
-  
-  const titleEl = editingCard.querySelector('.font-semibold.text-sm');
-  const descEl = editingCard.querySelector('.text-xs.text-slate-400.mt-1');
-  
-  if (titleEl) titleEl.textContent = newTitle;
-  if (descEl) descEl.textContent = newDesc;
-  
-  saveBoardState();
+function handleEditCard(e) {
+  e.preventDefault();
+  const id = document.getElementById('editCardId').value;
+  const task = boardTasks.find(t => t.id === id);
+  if(!task) return;
+
+  task.title = document.getElementById('editCardTitle').value;
+  task.desc = document.getElementById('editCardDesc').value;
+  task.members = getSelectedMembersFromCheckboxes('edit-member-checkbox');
+
+  saveTasks();
+  renderBoard();
   closeEditCardModal();
 }
 
-function deleteCard() {
-  if (!editingCard) return;
-  
-  if (confirm('Tem a certeza que quer eliminar este card?')) {
-    editingCard.remove();
-    saveBoardState();
-    closeEditCardModal();
-    updateStats();
-  }
+function deleteCardFromModal() {
+  const id = document.getElementById('editCardId').value;
+  boardTasks = boardTasks.filter(t => t.id !== id);
+  saveTasks();
+  renderBoard();
+  closeEditCardModal();
 }
 
-// ============ LOCALSTORAGE FUNCTIONS ============
-function saveBoardState() {
-  const boardState = {};
-  
-  document.querySelectorAll('[id^="col-"]').forEach(col => {
-    const colId = col.id;
-    boardState[colId] = [];
-    
-    col.querySelectorAll('.card').forEach(card => {
-      const idEl = card.querySelector('.mono.text-xs.text-slate-500');
-      const titleEl = card.querySelector('.font-semibold.text-sm');
-      const descEl = card.querySelector('.text-xs.text-slate-400.mt-1');
-      
-      if (idEl) {
-        boardState[colId].push({
-          id: idEl.textContent,
-          title: titleEl?.textContent || '',
-          desc: descEl?.textContent || '',
-          html: card.innerHTML
-        });
+function toggleCard(e) {
+  let card = e.currentTarget;
+  if(e.target.tagName === 'BUTTON' || e.target.closest('button')) return;
+  card.classList.toggle('open');
+}
+
+let draggedCardId = null;
+function handleDragStart(e) {
+  draggedCardId = e.currentTarget.getAttribute('data-id');
+}
+
+function setupDragAndDrop() {
+  const cols = document.querySelectorAll('.board-col');
+  cols.forEach(col => {
+    const listContainer = col.querySelector('.space-y-2');
+    col.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    });
+    col.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if(!draggedCardId) return;
+      const task = boardTasks.find(t => t.id === draggedCardId);
+      if(task) {
+        task.columnId = listContainer.id;
+        saveTasks();
+        renderBoard();
       }
+      draggedCardId = null;
     });
   });
-  
-  localStorage.setItem('sprintBoardState', JSON.stringify(boardState));
-  console.log('Board state saved to localStorage');
 }
 
-function restoreBoardState() {
-  const savedState = localStorage.getItem('sprintBoardState');
-  if (!savedState) return;
-  
-  try {
-    const boardState = JSON.parse(savedState);
-    
-    Object.keys(boardState).forEach(colId => {
-      const col = document.getElementById(colId);
-      if (!col) return;
-      
-      // Limpar cards existentes (excepto o card de "Done" que é só referência)
-      const existingCards = col.querySelectorAll('.card');
-      existingCards.forEach((card, idx) => {
-        // Manter o primeiro card se for o card concluído
-        if (!(colId === 'col-done' && idx === 0)) {
-          card.remove();
-        }
-      });
-      
-      // Adicionar cards restaurados
-      boardState[colId].forEach(cardData => {
-        const cardEl = document.createElement('div');
-        cardEl.innerHTML = cardData.html;
-        col.appendChild(cardEl.firstElementChild);
-      });
-    });
-    
-    setupDragAndDrop();
-    updateStats();
-    addEditButtonsToAllCards();
-    console.log('Board state restored from localStorage');
-  } catch (e) {
-    console.error('Error restoring board state:', e);
-  }
+function updateStats() {
+  const total = boardTasks.length;
+  const progress = boardTasks.filter(t => t.columnId === 'col-progress').length;
+  const review = boardTasks.filter(t => t.columnId === 'col-review').length;
+  const done = boardTasks.filter(t => t.columnId === 'col-done').length;
+
+  document.getElementById('stat-total').innerText = total;
+  document.getElementById('stat-progress').innerText = progress;
+  document.getElementById('stat-done').innerText = done;
+
+  const activeDone = done;
+  const pct = total > 0 ? Math.round((activeDone / total) * 100) : 0;
+  document.getElementById('stat-pct').innerText = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  document.querySelectorAll('.col-count').forEach(el => {
+    const cid = 'col-' + el.getAttribute('data-col');
+    el.innerText = boardTasks.filter(t => t.columnId === cid).length;
+  });
 }
 
-// ============ SYNC BETWEEN TABS ============
 window.addEventListener('storage', (e) => {
-  if (e.key === 'sprintBoardState' && e.newValue) {
-    console.log('Sincronizando com outra aba...');
-    restoreBoardState();
+  if (e.key === 'sprintBoardTasksState') {
+    loadTasks();
+    renderBoard();
   }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  updateStats();
+  loadTasks();
+  renderBoard();
   setupDragAndDrop();
-  restoreBoardState();
-  addEditButtonsToAllCards();
-  
-  // Close modals on overlay click
+
   document.getElementById('createCardModal').addEventListener('click', (e) => {
     if (e.target.id === 'createCardModal') closeCreateCardModal();
   });
-  
   document.getElementById('editCardModal').addEventListener('click', (e) => {
     if (e.target.id === 'editCardModal') closeEditCardModal();
   });
 
-  // Allow Enter key to add subtask
   document.getElementById('subtaskInput').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       addSubtaskField();
     }
-  });
-  
-  // Save board state every time it changes
-  const observer = new MutationObserver(() => {
-    saveBoardState();
-  });
-  
-  observer.observe(document.querySelector('.flex[style*="min-width"]'), {
-    subtree: true,
-    childList: true
   });
 });
 </script>
