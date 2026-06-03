@@ -511,14 +511,24 @@ function renderTaskCard(task) {
       let title = '';
       let meta = '';
 
-      if (typeof sub === 'object' && sub !== null) {
+      // TRATAMENTO ANTI-BARRAS: Força a limpeza visual se houver lixo de JSON stringificado
+      if (typeof sub === 'string') {
+        try {
+          let parsed = JSON.parse(sub);
+          while (typeof parsed === 'string') { parsed = JSON.parse(parsed); }
+          title = parsed.title || '';
+          meta = parsed.meta || '';
+          isCompleted = !!parsed.completed;
+        } catch (err) {
+          const parts = sub.split('|');
+          title = parts[0] || '';
+          meta = parts[1] || '';
+          isCompleted = false;
+        }
+      } else if (typeof sub === 'object' && sub !== null) {
         title = sub.title || '';
         meta = sub.meta || '';
         isCompleted = !!sub.completed;
-      } else if (typeof sub === 'string') {
-        const parts = sub.split('|');
-        title = parts[0] || '';
-        meta = parts[1] || '';
       }
 
       subtasksHtml += `
@@ -565,43 +575,29 @@ function renderTaskCard(task) {
 async function toggleSubtaskSave(e, taskId, subtaskIndex) {
   e.stopPropagation();
   
+  // Encontra a task no nosso array global local
   const task = globalTasks.find(t => t.id === taskId);
   if (!task || !task.subtasks) return;
 
-  let currentSub = task.subtasks[subtaskIndex];
-
-  // 1. Se por acaso a subtask veio da BD como uma String (por causa do bug das barras), tenta limpá-la
-  if (typeof currentSub === 'string') {
-    try {
-      // Tenta fazer o parse para ver se é um JSON disfarçado de string
-      let parsed = JSON.parse(currentSub);
-      // Se continuar a ser string após o primeiro parse, fazemos de novo até virar objeto
-      while (typeof parsed === 'string') {
-        parsed = JSON.parse(parsed);
+  // Garante que toda a lista de subtasks é convertida para objetos limpos antes de alterar
+  task.subtasks = task.subtasks.map(sub => {
+    if (typeof sub === 'string') {
+      try {
+        let parsed = JSON.parse(sub);
+        while (typeof parsed === 'string') { parsed = JSON.parse(parsed); }
+        return parsed;
+      } catch (err) {
+        const parts = sub.split('|');
+        return { title: parts[0] || '', meta: parts[1] || '', completed: false };
       }
-      currentSub = parsed;
-    } catch (err) {
-      // Se falhar o parse, é porque era mesmo uma string antiga formato "Texto | Nome"
-      const parts = currentSub.split('|');
-      currentSub = {
-        title: parts[0] || '',
-        meta: parts[1] || '',
-        completed: e.target.checked
-      };
     }
-  }
+    return sub;
+  });
 
-  // 2. Agora que garantimos que é um objeto limpo, atualizamos o estado do check
-  currentSub.completed = e.target.checked;
-  
-  // Forçamos a atualização no array local também
-  task.subtasks[subtaskIndex] = {
-    title: currentSub.title ? currentSub.title.trim() : '',
-    meta: currentSub.meta ? currentSub.meta.trim() : '',
-    completed: currentSub.completed
-  };
+  // Aplica o valor do clique à subtask selecionada
+  task.subtasks[subtaskIndex].completed = e.target.checked;
 
-  // 3. Grava na Base de Dados (passando o array de objetos nativos do JS)
+  // Força o Supabase a receber o array de objetos limpo
   const { error } = await supabaseClient
     .from('tasks')
     .update({ subtasks: task.subtasks })
@@ -611,7 +607,17 @@ async function toggleSubtaskSave(e, taskId, subtaskIndex) {
     alert("Erro ao salvar check: " + error.message);
     fetchTasks(); 
   } else {
+    // Atualiza as estatísticas e força o re-render visual do texto riscado
     updateStats();
+    const row = e.target.closest('.subtask-row');
+    const textEl = row.querySelector('.text-xs');
+    if (e.target.checked) {
+      row.classList.add('completed');
+      textEl.classList.add('line-through', 'text-slate-500');
+    } else {
+      row.classList.remove('completed');
+      textEl.classList.remove('line-through', 'text-slate-500');
+    }
   }
 }
 
